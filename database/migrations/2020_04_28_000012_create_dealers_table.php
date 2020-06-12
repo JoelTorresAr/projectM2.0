@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateDealersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('dealers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->foreignId('admin_id')->constrained();
+            $table->enum('status',['ENABLE','DISABLE'])->default('ENABLE');
+            $table->dateTime('startdate');
+            $table->dateTime('enddate');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('dealers');
+        Schema::enableForeignKeyConstraints();
+    }
+}
