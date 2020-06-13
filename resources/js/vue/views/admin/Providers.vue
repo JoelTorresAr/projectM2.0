@@ -3,7 +3,6 @@
     <v-data-table
       :headers="headers"
       :items="providers"
-      :dark="darkStile"
       item-key="id"
       sort-by="subsidiary"
       class="elevation-1"
@@ -15,7 +14,7 @@
           <v-toolbar-title>Proveedores</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
@@ -115,7 +114,7 @@
       <template v-slot:item.actions="{ item }">
         <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
-        </v-btn>              
+        </v-btn>
         <v-btn color="red" fab x-small dark @click="deleteItem(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
@@ -160,9 +159,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo proveedor" : "Editar proveedor";
     },
-    darkStile(){
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {
@@ -178,26 +174,26 @@ export default {
 
   methods: {
     initialize() {
-      axios.get("/api/providers").then(({data}) => {
+      axios.get("/api/providers").then(({ data }) => {
         this.providers = data;
         this.loading = false;
       });
     },
     editItem(item) {
       (this.editedIndex = { id: item.id }),
-      (this.citySelected = item.city_id),
-      (this.getDistrictsbyCity(this.citySelected)),
-      (this.editedItem.name = item.name),
-      (this.editedItem.address = item.address),
-      (this.editedItem.ruc = item.ruc),
-      (this.editedItem.phone1 = item.phone1),
-      (this.editedItem.district_id = item.district_id),
-      (this.itemSelectedId = item.id),
-      (this.dialogForm = true);
+        (this.citySelected = item.city_id),
+        this.getDistrictsbyCity(this.citySelected),
+        (this.editedItem.name = item.name),
+        (this.editedItem.address = item.address),
+        (this.editedItem.ruc = item.ruc),
+        (this.editedItem.phone1 = item.phone1),
+        (this.editedItem.district_id = item.district_id),
+        (this.itemSelectedId = item.id),
+        (this.dialogForm = true);
     },
 
     deleteItem(item) {
-     Swal.fire({
+      Swal.fire({
         title: "Estas seguro?",
         text: "No podras revertir esto!",
         icon: "warning",
@@ -210,16 +206,16 @@ export default {
           let url = "/api/providers/destroy/" + item.id;
           const index = this.providers.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.providers.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.providers.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },
@@ -233,9 +229,11 @@ export default {
     },
     save() {
       if (this.editedIndex === -1) {
-          this.editedItem.post("/api/providers/store").then(({ data }) => {
-          console.log(data);
-          if (data.status == "200") {
+        this.editedItem
+          .post("/api/providers/store")
+          .then(({ data }) => {
+            console.log(data);
+            if (data.status == "200") {
               this.initialize();
               toastr.success("Registrado con exito");
               this.close();
@@ -246,8 +244,10 @@ export default {
           });
       } else {
         let url = "/api/providers/update/" + this.itemSelectedId;
-        this.editedItem.put(url).then(({ data }) => {
-          if (data.status == "200") {
+        this.editedItem
+          .put(url)
+          .then(({ data }) => {
+            if (data.status == "200") {
               this.initialize();
               toastr.success("Editado con exito");
               this.close();
@@ -256,17 +256,16 @@ export default {
           .catch(error => {
             toastr.error("Error al registrar");
           });
-        
       }
     },
     emptyForm() {
-      (this.citySelected = "");
-      (this.editedItem.name = "");
-      (this.editedItem.address = "");
-      (this.editedItem.ruc = "");
-      (this.editedItem.phone1 = "");
-      (this.editedItem.district_id = "");
-      (this.itemSelectedId = "");
+      this.citySelected = "";
+      this.editedItem.name = "";
+      this.editedItem.address = "";
+      this.editedItem.ruc = "";
+      this.editedItem.phone1 = "";
+      this.editedItem.district_id = "";
+      this.itemSelectedId = "";
     },
     getCities() {
       let url = "/api/cities";
@@ -283,7 +282,7 @@ export default {
           this.editedItem.district_id = "";
         }
       });
-    },
+    }
   }
 };
 </script>

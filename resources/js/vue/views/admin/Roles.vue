@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="roles"
       item-key="id"
@@ -19,8 +18,8 @@
           <v-toolbar-title>Roles</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
-            <template  v-slot:activator="{ on }">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
+            <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -42,7 +41,6 @@
                       </v-col>
                       <v-col cols="12">
                         <v-autocomplete
-                          :dark="darkStile"
                           v-model="editedItem.permissions"
                           :items="permissions"
                           item-text="name"
@@ -130,10 +128,10 @@
         </td>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn  color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn  color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -174,9 +172,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo rol" : "Editar rol";
     },
-    darkStile() {
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {
@@ -198,7 +193,7 @@ export default {
       });
     },
     editItem(item) {
-        (this.editedIndex = { id: item.id }),
+      (this.editedIndex = { id: item.id }),
         (this.editedItem.name = item.name),
         (this.editedItem.description = item.description),
         (this.rolId = item.id),
@@ -257,16 +252,16 @@ export default {
           let url = "/api/roles/destroy/" + item.id;
           const index = this.roles.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.roles.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.roles.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },

@@ -1,6 +1,10 @@
-import auth from './auth';
-import guest from './guest';
+import authAdmin from './authAdmin';
+import guestAdmin from './guestAdmin';
+import guestDealer from './guestDealer';
+import authDealer from './authDealer';
 export default {
-    auth,
-    guest
+    authAdmin,
+    guestAdmin,
+    authDealer,
+    guestDealer
 }

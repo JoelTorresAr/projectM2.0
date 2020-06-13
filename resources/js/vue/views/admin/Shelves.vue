@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="shelves"
       item-key="id"
@@ -17,7 +16,7 @@
           <v-toolbar-title>Estantes</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
@@ -56,8 +55,7 @@
                           :items="rentalstatus"
                           attach
                           label="Estado de renta"
-                        >
-                        </v-select>
+                        ></v-select>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -116,7 +114,7 @@ export default {
       { text: "Fecha de modificación", value: "updated_at" },
       { text: "Actions", value: "actions", sortable: false }
     ],
-    rentalstatus: ['ENABLE','DISABLE'],
+    rentalstatus: ["ENABLE", "DISABLE"],
     shelves: [],
     subsidiaries: [],
     editedIndex: -1,
@@ -133,9 +131,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo estante" : "Editar estante";
     },
-    darkStile() {
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {

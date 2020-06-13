@@ -36,6 +36,11 @@ return [
     */
 
     'guards' => [
+        'dealer' => [
+            'driver'   => 'jwt',
+            'provider' => 'dealers',
+        ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -66,6 +71,11 @@ return [
     */
 
     'providers' => [
+        'dealers' => [
+            'driver' => 'eloquent',
+            'model'  => App\Dealer::class,
+        ],
+
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
@@ -93,6 +103,12 @@ return [
     */
 
     'passwords' => [
+        'dealers' => [
+            'provider' => 'dealers',
+            'table'    => 'password_resets',
+            'expire'   => 60,
+        ],
+
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',

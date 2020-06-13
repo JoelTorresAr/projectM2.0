@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="igvs"
       item-key="id"
@@ -15,7 +14,7 @@
           <v-toolbar-title>IGV</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
@@ -58,9 +57,7 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.mount="{ item }">
-        {{ item.mount }} %
-      </template>
+      <template v-slot:item.mount="{ item }">{{ item.mount }} %</template>
       <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
       <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
       <template v-slot:item.actions="{ item }">
@@ -101,9 +98,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo IGV" : "Editar IGV";
     },
-    darkStile() {
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {

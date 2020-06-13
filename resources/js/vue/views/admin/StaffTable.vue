@@ -2,9 +2,8 @@
   <v-app id="app">
     <v-data-table
       :headers="headers"
-      height="100%" 
+      height="100%"
       :items="staff"
-      :dark="darkStile"
       item-key="id"
       sort-by="subsidiary"
       class="elevation-1"
@@ -16,7 +15,7 @@
           <v-toolbar-title>Personal</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
@@ -89,7 +88,6 @@
                             transition="scale-transition"
                             offset-y
                             min-width="290px"
-                            :dark="darkStile"
                           >
                             <template v-slot:activator="{ on }">
                               <v-text-field
@@ -216,7 +214,7 @@
     <!--/v-data-table-->
     <!--v-dialog-info-->
     <div class="text-center">
-      <v-dialog :dark="darkStile" v-model="dialogInfo" persistent max-width="600px">
+      <v-dialog v-model="dialogInfo" persistent max-width="600px">
         <v-card>
           <v-card-title
             class="headline grey"
@@ -329,9 +327,6 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo Personal" : "Editar Personal";
-    },
-    darkStile() {
-      return this.$store.getters.darkStile;
     }
   },
 
@@ -386,16 +381,16 @@ export default {
           let url = "/api/staff/destroy/" + item.id;
           const index = this.staff.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.staff.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.staff.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },
@@ -461,7 +456,9 @@ export default {
       this.dialogInfo = true;
     },
     getRoles() {
-      axios.get("/api/admins/list/OnlyName").then(({ data }) => (this.credentials = data));
+      axios
+        .get("/api/admins/list/OnlyName")
+        .then(({ data }) => (this.credentials = data));
     },
     getColor(status) {
       return status === "activo" ? "green" : "red";

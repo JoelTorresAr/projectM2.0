@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('admin/{any}', 'HomeController@spa')->where('any','.*');
+Route::get('dealer/{any}', 'HomeController@spa')->where('any','.*');

@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="districts"
       item-key="id"
@@ -15,8 +14,8 @@
           <v-toolbar-title>Distritos</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
-            <template  v-slot:activator="{ on }">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
+            <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -38,7 +37,7 @@
                           :class="{ 'is-invalid': editedItem.errors.has('city_id') }"
                         ></v-select>
                         <has-error class="red--text" :form="editedItem" field="city_id"></has-error>
-                        </v-col>
+                      </v-col>
                       <v-col cols="12">
                         <v-text-field
                           v-model="editedItem.name"
@@ -71,10 +70,10 @@
       <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
       <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
       <template v-slot:item.actions="{ item }">
-        <v-btn  color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn  color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -95,14 +94,14 @@ export default {
       { text: "Ciudad", value: "city" },
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false }
     ],
     districts: [],
     cities: [],
     editedIndex: -1,
     itemSelectedId: "",
     editedItem: new Form({
-      name:           "",
+      name: "",
       city_id: ""
     })
   }),
@@ -110,9 +109,6 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo distrito" : "Editar distrito";
-    },
-    darkStile() {
-      return this.$store.getters.darkStile;
     }
   },
 
@@ -135,7 +131,7 @@ export default {
       });
     },
     editItem(item) {
-        (this.editedIndex = { id: item.id }),
+      (this.editedIndex = { id: item.id }),
         (this.editedItem.name = item.name),
         (this.editedItem.city_id = item.city_id),
         (this.itemSelectedId = item.id),
@@ -172,8 +168,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = ""),
-      (this.editedItem.city_id = "")
+      (this.editedItem.name = ""), (this.editedItem.city_id = "");
     },
     deleteItem(item) {
       Swal.fire({
@@ -189,16 +184,16 @@ export default {
           let url = "/api/districts/destroy/" + item.id;
           const index = this.districts.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.districts.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.districts.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },
@@ -216,7 +211,7 @@ export default {
     getcities() {
       let url = "/api/cities";
       axios.get(url).then(({ data }) => (this.cities = data));
-    },
+    }
   }
 };
 </script>

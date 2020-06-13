@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="cities"
       item-key="id"
@@ -15,7 +14,7 @@
           <v-toolbar-title>Ciudades</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
@@ -59,7 +58,7 @@
       <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
       <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
       <template v-slot:item.actions="{ item }">
-        <v-btn  color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
         <v-btn color="red" fab x-small dark @click="deleteItem(item)">
@@ -82,13 +81,13 @@ export default {
       { text: "Nombre", value: "name" },
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false }
     ],
     cities: [],
     editedIndex: -1,
     itemSelectedId: "",
     editedItem: new Form({
-      name: "",
+      name: ""
     })
   }),
 
@@ -96,9 +95,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva ciudad" : "Editar ciudad";
     },
-    darkStile() {
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {
@@ -119,7 +115,7 @@ export default {
       });
     },
     editItem(item) {
-        (this.editedIndex = { id: item.id }),
+      (this.editedIndex = { id: item.id }),
         (this.editedItem.name = item.name),
         (this.editedItem.description = item.description),
         (this.itemSelectedId = item.id),
@@ -156,7 +152,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = "");
+      this.editedItem.name = "";
     },
     deleteItem(item) {
       Swal.fire({
@@ -172,16 +168,16 @@ export default {
           let url = "/api/cities/destroy/" + item.id;
           const index = this.cities.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.cities.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.cities.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },

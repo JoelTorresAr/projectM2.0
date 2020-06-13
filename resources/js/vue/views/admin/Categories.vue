@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="categories"
       item-key="id"
@@ -15,8 +14,8 @@
           <v-toolbar-title>Categorias</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
-            <template  v-slot:activator="{ on }">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
+            <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -62,7 +61,7 @@
         <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn  color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -82,22 +81,19 @@ export default {
       { text: "Nombre", value: "name" },
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false }
     ],
     categories: [],
     editedIndex: -1,
     itemSelectedId: "",
     editedItem: new Form({
-      name: "",
+      name: ""
     })
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva categoria" : "Editar categoria";
-    },
-    darkStile() {
-      return this.$store.getters.darkStile;
     }
   },
 
@@ -119,7 +115,7 @@ export default {
       });
     },
     editItem(item) {
-        (this.editedIndex = { id: item.id }),
+      (this.editedIndex = { id: item.id }),
         (this.editedItem.name = item.name),
         (this.itemSelectedId = item.id),
         (this.dialogForm = true);
@@ -155,7 +151,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = "");
+      this.editedItem.name = "";
     },
     deleteItem(item) {
       Swal.fire({
@@ -171,16 +167,16 @@ export default {
           let url = "/api/categories/destroy/" + item.id;
           const index = this.categories.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.categories.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.categories.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },

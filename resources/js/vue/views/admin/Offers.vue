@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="offers"
       item-key="id"
@@ -15,8 +14,8 @@
           <v-toolbar-title>Ofertas</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
-            <template  v-slot:activator="{ on }">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
+            <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -55,7 +54,6 @@
                 <v-spacer></v-spacer>
                 <v-btn color="red darken-1" text @click="close">Cancelar</v-btn>
                 <v-btn
-                 
                   color="blue darken-1"
                   :disabled="editedItem.busy"
                   type="submit"
@@ -67,16 +65,14 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.discount="{ item }">
-        {{ item.discount }} %
-      </template>
+      <template v-slot:item.discount="{ item }">{{ item.discount }} %</template>
       <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
       <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
       <template v-slot:item.actions="{ item }">
-        <v-btn  color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn  color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -97,14 +93,14 @@ export default {
       { text: "% de descuento", value: "discount" },
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false }
     ],
     offers: [],
     editedIndex: -1,
     itemSelectedId: "",
     editedItem: new Form({
       name: "",
-      discount: "",
+      discount: ""
     })
   }),
 
@@ -112,9 +108,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva oferta" : "Editar oferta";
     },
-    darkStile() {
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {
@@ -124,7 +117,7 @@ export default {
   },
 
   created() {
-   this.initialize();
+    this.initialize();
   },
 
   methods: {
@@ -135,7 +128,7 @@ export default {
       });
     },
     editItem(item) {
-        (this.editedIndex = { id: item.id }),
+      (this.editedIndex = { id: item.id }),
         (this.editedItem.name = item.name),
         (this.editedItem.discount = item.discount),
         (this.itemSelectedId = item.id),
@@ -172,8 +165,8 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = "");
-      (this.editedItem.discount = "");
+      this.editedItem.name = "";
+      this.editedItem.discount = "";
     },
     deleteItem(item) {
       Swal.fire({
@@ -189,16 +182,16 @@ export default {
           let url = "/api/offers/destroy/" + item.id;
           const index = this.offers.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.offers.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.offers.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },

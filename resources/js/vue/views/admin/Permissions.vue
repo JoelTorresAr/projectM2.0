@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <v-data-table
-      :dark="darkStile"
       :headers="headers"
       :items="permissions"
       item-key="id"
@@ -15,8 +14,8 @@
           <v-toolbar-title>Permisos</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
-            <template  v-slot:activator="{ on }">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
+            <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -73,7 +72,7 @@
         <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn   color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -94,7 +93,7 @@ export default {
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
       { text: "Descripción", value: "description" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false }
     ],
     permissions: [],
     expanded: [],
@@ -111,9 +110,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo permiso" : "Editar permiso";
     },
-    darkStile() {
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {
@@ -134,7 +130,7 @@ export default {
       });
     },
     editItem(item) {
-        (this.editedIndex = { id: item.id }),
+      (this.editedIndex = { id: item.id }),
         (this.editedItem.name = item.name),
         (this.editedItem.description = item.description),
         (this.permissionId = item.id),
@@ -171,8 +167,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = ""),
-      (this.editedItem.description = "")
+      (this.editedItem.name = ""), (this.editedItem.description = "");
     },
     deleteItem(item) {
       Swal.fire({
@@ -188,16 +183,16 @@ export default {
           let url = "/api/permissions/destroy/" + item.id;
           const index = this.permissions.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.permissions.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.permissions.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },

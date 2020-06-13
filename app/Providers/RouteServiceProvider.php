@@ -46,8 +46,27 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapDealerRoutes();
+
         //
+    }    
+    
+    /**
+     * Define the "dealer" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapDealerRoutes()
+    {
+        Route::prefix('dealer')
+             ->middleware(['web'])
+             ->namespace($this->namespace)
+             ->group(base_path('routes/dealer.php'));
     }
+
+
 
     /**
      * Define the "web" routes for the application.

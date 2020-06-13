@@ -4,7 +4,6 @@
       :headers="headers"
       :items="credentials"
       item-key="id"
-      :dark="darkStile"
       sort-by="staff_id"
       class="elevation-1"
       :loading="loading"
@@ -18,7 +17,7 @@
           <v-toolbar-title>Credenciales</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog :dark="darkStile" v-model="dialogForm" persistent max-width="600px">
+          <v-dialog v-model="dialogForm" persistent max-width="600px">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
@@ -66,7 +65,11 @@
                           required
                           :class="{ 'is-invalid': editedItem.errors.has('password_confirmation') }"
                         ></v-text-field>
-                        <has-error class="red--text" :form="editedItem" field="password_confirmation"></has-error>
+                        <has-error
+                          class="red--text"
+                          :form="editedItem"
+                          field="password_confirmation"
+                        ></has-error>
                       </v-col>
                       <v-col cols="12">
                         <v-textarea
@@ -119,11 +122,7 @@
         >{{ item.staff !== null ? "Asignado" : "Sin asignar" }}</v-chip>
       </template>
       <template v-slot:item.roles="{ item }">
-        <div
-          class="text-left"
-          v-for="(rol, index) in item.roles"
-          :key="index"
-        >{{rol.name }}</div>
+        <div class="text-left" v-for="(rol, index) in item.roles" :key="index">{{rol.name }}</div>
       </template>
       <template v-slot:item.staffname="{ item }">{{ nameStaff(item) }}</template>
       <template v-slot:expanded-item="{ headers, item }">
@@ -146,11 +145,11 @@
           </v-list-item>
         </td>
       </template>
-      <template  v-slot:item.actions="{ item }">
+      <template v-slot:item.actions="{ item }">
         <v-btn color="primary" fab x-small dark @click="editItem(item)">
           <v-icon>mdi-pencil</v-icon>
-        </v-btn>       
-        <v-btn  color="red" fab x-small dark @click="deleteItem(item)">
+        </v-btn>
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -170,14 +169,19 @@ export default {
     dialogStaff: false,
     loading: true,
     headers: [
-      { text: "Nombre", value: "name" , align: 'center'},
-      { text: "Descripcion", value: "description" ,width: '15rem', align: 'center'},
-      { text: "Fecha de creación", value: "created_at" , align: 'center'},
-      { text: "Fecha de modificación", value: "updated_at" , align: 'center'},
-      { text: "Correo", value: "email" , align: 'center'},
-      { text: "Estado", value: "staff" , align: 'center'},
-      { text: "Usuario", value: "staffname" , align: 'center'},
-      { text: "Actions", value: "actions", sortable: false},
+      { text: "Nombre", value: "name", align: "center" },
+      {
+        text: "Descripcion",
+        value: "description",
+        width: "15rem",
+        align: "center"
+      },
+      { text: "Fecha de creación", value: "created_at", align: "center" },
+      { text: "Fecha de modificación", value: "updated_at", align: "center" },
+      { text: "Correo", value: "email", align: "center" },
+      { text: "Estado", value: "staff", align: "center" },
+      { text: "Usuario", value: "staffname", align: "center" },
+      { text: "Actions", value: "actions", sortable: false },
       { text: "Roles", value: "data-table-expand" }
     ],
     credentials: [],
@@ -193,16 +197,13 @@ export default {
       password_confirmation: "",
       description: "",
       roles: []
-    }),
+    })
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva credencial" : "Editar credencial";
     },
-    darkStile(){
-      return this.$store.getters.darkStile;
-    }
   },
 
   watch: {
@@ -221,20 +222,20 @@ export default {
 
   methods: {
     initialize() {
-      axios.get("/api/admins").then(({data})  => {
+      axios.get("/api/admins").then(({ data }) => {
         this.credentials = data;
         this.loading = false;
       });
     },
     editItem(item) {
       (this.editedIndex = { id: item.id }),
-      (this.editedItem.staff_id = item.staff_id),
-      (this.editedItem.name = item.name),
-      (this.editedItem.email = item.email),
-      (this.editedItem.description = item.description),
-      (this.adminId = item.id),
-      (this.dialogForm = true),
-      (this.editedItem.roles = []);
+        (this.editedItem.staff_id = item.staff_id),
+        (this.editedItem.name = item.name),
+        (this.editedItem.email = item.email),
+        (this.editedItem.description = item.description),
+        (this.adminId = item.id),
+        (this.dialogForm = true),
+        (this.editedItem.roles = []);
       for (var i = 0; i < item.roles.length; i++) {
         this.editedItem.roles.push(item.roles[i].id);
       }
@@ -254,16 +255,16 @@ export default {
           let url = "/api/admins/destroy/" + item.id;
           const index = this.credentials.indexOf(item);
           axios
-              .delete(url)
-              .then(({ data }) => {
-                if (data.status == "200") {
-                  this.credentials.splice(index, 1);
-                  toastr.success("Eliminado con exito");
-                }
-              })
-              .catch(error => {
-                toastr.error("Error al eliminar");
-              });
+            .delete(url)
+            .then(({ data }) => {
+              if (data.status == "200") {
+                this.credentials.splice(index, 1);
+                toastr.success("Eliminado con exito");
+              }
+            })
+            .catch(error => {
+              toastr.error("Error al eliminar");
+            });
         }
       });
     },
@@ -323,15 +324,14 @@ export default {
       return status !== null ? "green" : "red";
     },
     getRoles() {
-      axios.get("/api/roles/list/OnlyName").then(({ data }) => (this.roles = data));
+      axios
+        .get("/api/roles/list/OnlyName")
+        .then(({ data }) => (this.roles = data));
     },
     nameStaff(item) {
       let name = "";
       if (item.staff !== null) {
-        name =
-          item.staff.staffname +
-          " " +
-          item.staff.stafflastname;
+        name = item.staff.staffname + " " + item.staff.stafflastname;
       }
       return name;
     },

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateDealersTable extends Migration
 {
@@ -14,12 +14,12 @@ class CreateDealersTable extends Migration
     public function up()
     {
         Schema::create('dealers', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name');
-            $table->foreignId('admin_id')->constrained();
-            $table->enum('status',['ENABLE','DISABLE'])->default('ENABLE');
-            $table->dateTime('startdate');
-            $table->dateTime('enddate');
+            $table->string('email')->unique();
+            $table->boolean('active')->default(0);
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -31,8 +31,6 @@ class CreateDealersTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('dealers');
-        Schema::enableForeignKeyConstraints();
     }
 }

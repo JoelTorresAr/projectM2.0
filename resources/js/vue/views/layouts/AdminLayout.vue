@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
-        <v-list-item exact>
+        <v-list-item exact :to="{name: 'admin'}">
           <v-list-item-action>
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
@@ -22,6 +22,12 @@
           <template v-slot:activator>
             <v-list-item-title>Productos</v-list-item-title>
           </template>
+          <v-list-item exact :to="{name: 'articles'}">
+            <v-list-item-title>Productos</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>fas fa-circle-notch</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
           <v-list-item exact :to="{name: 'offers'}">
             <v-list-item-title>Ofertas</v-list-item-title>
             <v-list-item-icon>
@@ -125,10 +131,24 @@
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-chip class="mr-2">
-          <v-icon left>mdi-brightness-5</v-icon>Turn on Lights
-        </v-chip>
       </v-list>
+      <v-spacer></v-spacer>
+        <v-list-item @click="changeTheme" align="end">
+          <v-list-item-action>
+            <v-icon>mdi-brightness-6</v-icon>
+          </v-list-item-action>          
+          <v-list-item-content>
+            <v-list-item-title>Turn on Lights</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="logout" align="end">
+          <v-list-item-action>
+            <v-icon class="red--text">mdi-power</v-icon>
+          </v-list-item-action>          
+          <v-list-item-content>
+            <v-list-item-title>Cerrar sesión</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
     </v-navigation-drawer>
 
     <v-app-bar app clipped-left>
@@ -181,9 +201,15 @@ export default {
   },
   mounted: function() {},
   methods: {
-    authe() {
-      this.$store.dispatch("authenticate2").then(res => {
-        console.log("respuesta:" + res);
+    changeTheme() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+    },
+    logout() {
+      axios.post("/api/admin/logout").then(({ data }) => {
+        if(data.message){
+          this.$router.push({ name: "authenticate" });
+        }
+        console.log(data)
       });
     },
     countdown() {

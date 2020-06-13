@@ -155,3 +155,18 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
         Route::delete('destroy/{shelf}','ShelfController@destroy');
     });
 });
+
+//Dealer routes
+
+Route::group(['prefix' => 'dealer','namespace' => 'Auth'], function () {
+    Route::post('login', 'LoginDealerController@login');
+});
+
+Route::group(['middleware' => ['auth:dealer']], function () {
+
+ //DealerController
+Route::group(['prefix' => 'dealer','namespace' => 'Auth'], function () {
+    Route::get('/me', 'LoginDealerController@me');
+    Route::post('/logout', 'LoginDealerController@logout');
+});
+});
