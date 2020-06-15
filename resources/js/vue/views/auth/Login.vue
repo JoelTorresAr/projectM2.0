@@ -94,9 +94,6 @@ export default {
           if (res.data.access_token) {
             toastr.success("Acceso correcto");
             //window.location.href = "/new/window/location";
-            console.log(res.data.expires_in)
-            console.log(res.data.current_time)
-            console.log(res.data.time)
             localStorage.setItem('token_expires_in', res.data.expires_in);
             this.$router.push({ name: "admin" });
             //location.reload();

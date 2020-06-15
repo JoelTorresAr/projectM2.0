@@ -39,7 +39,7 @@ class Dealer extends Authenticatable implements JWTSubject
     {
         $this->notify(new DealerResetPassword($token));
     }
-        /**
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -58,5 +58,11 @@ class Dealer extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
+    /**
+     * Get all of the dealer's articles.
+     */
+    public function articles()
+    {
+        return $this->morphMany('App\models\Article', 'articlable');
+    }
 }

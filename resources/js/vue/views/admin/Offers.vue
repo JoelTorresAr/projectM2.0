@@ -165,8 +165,7 @@ export default {
       }
     },
     emptyForm() {
-      this.editedItem.name = "";
-      this.editedItem.discount = "";
+      this.editedItem.reset()
     },
     deleteItem(item) {
       Swal.fire({

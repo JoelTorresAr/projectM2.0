@@ -14,4 +14,12 @@ class Subsidiary extends Model
   protected $fillable = [
     'name'
   ];
+
+   /**
+     * Get all of the articles for the subsidiary.
+     */
+    public function posts()
+    {
+        return $this->hasManyThrough('App\models\Shelf', 'App\models\Articles');
+    }
 }

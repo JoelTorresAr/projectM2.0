@@ -15,7 +15,7 @@
           <v-toolbar-title>Personal</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialogForm" persistent max-width="600px">
+          <v-dialog v-model="dialogForm" persistent max-width="630px">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
@@ -149,6 +149,8 @@
                           required
                           item-text="name"
                           item-value="id"
+                          hint="Seleccione la ciudad para cargar sus distritos"
+                          persistent-hint
                           @change="getDistrictsbyCity()"
                         ></v-select>
                       </v-col>

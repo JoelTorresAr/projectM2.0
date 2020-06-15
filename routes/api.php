@@ -40,6 +40,7 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     //SubsidiaryController
     Route::group(['prefix' => 'subsidiaries','namespace' => 'Api'], function () {
     Route::get('/','SubsidiaryController@index');
+    Route::get('list/OnlyName','SubsidiaryController@listOnlyName');
     Route::post('store','SubsidiaryController@store');
     Route::put('update/{subsidiary}','SubsidiaryController@update');
     Route::delete('destroy/{subsidiary}','SubsidiaryController@destroy');
@@ -153,6 +154,20 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
         Route::post('store','ShelfController@store');
         Route::put('update/{shelf}','ShelfController@update');
         Route::delete('destroy/{shelf}','ShelfController@destroy');
+    });
+    
+    //ArticleController
+    Route::group(['prefix' => 'articles','namespace' => 'Api'], function () {
+        Route::get('/','ArticleController@index');
+        Route::get('listby/{subsidiary}','ArticleController@indexbysubsidiary');
+        Route::post('store','ArticleController@store');
+        Route::put('update/{shelf}','ArticleController@update');
+        Route::delete('destroy/{shelf}','ArticleController@destroy');
+    });
+
+    //PhotosController
+    Route::group(['prefix' => 'photos','namespace' => 'Api'], function () {
+        Route::post('store/article','PhotosController@storeArticle');
     });
 });
 

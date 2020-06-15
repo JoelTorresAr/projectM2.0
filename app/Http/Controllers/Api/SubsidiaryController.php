@@ -16,6 +16,18 @@ class SubsidiaryController extends Controller
         ->orderBy('name')
         ->get();
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listOnlyName()
+    {
+        return DB::table('subsidiaries')
+        ->select('id','name')
+        ->get();
+    }
     /**
      * Store a newly created resource in storage.
      *

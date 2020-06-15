@@ -1,6 +1,10 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app clipped>
+    <v-navigation-drawer v-model="drawer" app 
+    :mini-variant.sync="mini" 
+    permanent
+    expand-on-hover 
+    clipped>
       <v-list dense>
         <v-list-item exact :to="{name: 'admin'}">
           <v-list-item-action>
@@ -133,27 +137,27 @@
         </v-list-item>
       </v-list>
       <v-spacer></v-spacer>
-        <v-list-item @click="changeTheme" align="end">
-          <v-list-item-action>
-            <v-icon>mdi-brightness-6</v-icon>
-          </v-list-item-action>          
-          <v-list-item-content>
-            <v-list-item-title>Turn on Lights</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="logout" align="end">
-          <v-list-item-action>
-            <v-icon class="red--text">mdi-power</v-icon>
-          </v-list-item-action>          
-          <v-list-item-content>
-            <v-list-item-title>Cerrar sesión</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      <v-list-item @click="changeTheme">
+        <v-list-item-action>
+          <v-icon>mdi-brightness-6</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Turn on Lights</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item @click="logout">
+        <v-list-item-action>
+          <v-icon class="red--text">mdi-power</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>Cerrar sesión</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-navigation-drawer>
 
     <v-app-bar app clipped-left>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-app-bar-nav-icon @click.stop="mini = !mini"></v-app-bar-nav-icon>
+      <v-toolbar-title>Argus</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-chip class="ma-2" color="orange darken-3" outlined>
         <v-icon left>fas fa-key</v-icon>
@@ -185,7 +189,8 @@ export default {
     source: String
   },
   data: () => ({
-    drawer: null,
+    drawer: true,
+    mini: true,
     token_expires_in: 0,
     token_timeLeft: 0
   }),
@@ -202,14 +207,14 @@ export default {
   mounted: function() {},
   methods: {
     changeTheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     logout() {
       axios.post("/api/admin/logout").then(({ data }) => {
-        if(data.message){
+        if (data.message) {
           this.$router.push({ name: "authenticate" });
         }
-        console.log(data)
+        console.log(data);
       });
     },
     countdown() {
@@ -243,8 +248,8 @@ export default {
           }
 
           this.token_timeLeft = `${hours}:${minutes}:${seconds}`;
-          if(minutes==10){
-            toastr.warning('El token esta por expirar')
+          if (hours < 1 && minutes == 10) {
+            toastr.warning("El token esta por expirar");
           }
 
           timeLeft -= 1000;
@@ -273,7 +278,7 @@ export default {
           clearInterval(interval);
         }
       };
-    },
+    }
   }
 };
 </script>

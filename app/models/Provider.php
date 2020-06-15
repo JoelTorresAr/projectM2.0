@@ -19,5 +19,22 @@ class Provider extends Model
         'name',
         'phone1',
         'phone2',
+    ];   
+    
+     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'pivot'
     ];
+
+    /**
+     * The articles that belong to the provider.
+     */
+    public function articles()
+    {
+        return $this->hasMany('App\models\Article');
+    }
 }

@@ -42,6 +42,9 @@ Vue.use(LaravelPermissionToVueJS)
 
 import store from "./vue/store/index"
 
+//vueDropzone
+import vueDropzone from 'vue2-dropzone'
+Vue.component('vue-dropzone', vueDropzone);
 
 new Vue({
     el: '#app',

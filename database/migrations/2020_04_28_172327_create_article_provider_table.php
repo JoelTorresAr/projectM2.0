@@ -14,13 +14,6 @@ class CreateArticleProviderTable extends Migration
     public function up()
     {
         Schema::create('article_provider', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('article_id')->constrained();
-            $table->foreignId('provider_id')->constrained();
-            $table->string('receptiondate');
-            $table->integer('totalquantity');
-            $table->decimal('totalprice',18,2);
-            $table->timestamps();
         });
     }
 
