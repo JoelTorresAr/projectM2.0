@@ -24,7 +24,14 @@ class ArticleStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'file'          => ['required','mimes:jpeg,png'],
+            'category_id'   => ['required','integer'],
+            'shelf_id'      => ['required','integer'],
+            'provider_id'   => ['required','integer'],
+            'name'          => ['required','string'],
+            'purchaseprice' => ['required','numeric','min:0'],
+            'saleprice'     => ['required','numeric','min:0'],
+            'description'   => ['required','string','max:120'],
         ];
     }
 }

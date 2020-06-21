@@ -102,8 +102,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "workstations.index");
     this.initialize();
   },
 
@@ -151,7 +155,7 @@ export default {
       }
     },
     emptyForm() {
-      this.editedItem.name = "";
+      this.editedItem.reset();
     },
     deleteItem(item) {
       Swal.fire({

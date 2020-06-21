@@ -166,8 +166,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "providers.index");
     this.initialize();
     this.getCities();
   },
@@ -260,12 +264,8 @@ export default {
     },
     emptyForm() {
       this.citySelected = "";
-      this.editedItem.name = "";
-      this.editedItem.address = "";
-      this.editedItem.ruc = "";
-      this.editedItem.phone1 = "";
-      this.editedItem.district_id = "";
       this.itemSelectedId = "";
+      this.editedItem.reset();
     },
     getCities() {
       let url = "/api/cities";

@@ -4,6 +4,10 @@ import Middlewares from '../middleware/'
 Vue.use(Router)
 
 let routes = [{
+        path: '/admin/401',
+        name: 'unauthorized',
+        component: require('../views/401.vue').default
+    }, {
         path: '/admin/login',
         name: 'authenticate',
         component: require('../views/auth/Login.vue').default,
@@ -158,6 +162,14 @@ let routes = [{
                 path: '/admin/dashboard/passport',
                 name: 'passport',
                 component: require('../views/admin/Passport').default,
+                meta: {
+                    middleware: [Middlewares.authAdmin]
+                },
+            },
+            {
+                path: '/admin/dashboard/dealers',
+                name: 'dealers',
+                component: require('../views/admin/Dealers').default,
                 meta: {
                     middleware: [Middlewares.authAdmin]
                 },

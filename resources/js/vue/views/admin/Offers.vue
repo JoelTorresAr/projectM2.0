@@ -115,8 +115,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "offers.index");
     this.initialize();
   },
 

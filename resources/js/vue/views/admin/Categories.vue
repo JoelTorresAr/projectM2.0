@@ -104,7 +104,11 @@ export default {
   },
 
   created() {
+    this.$store.dispatch("can",'categories.index')
     this.initialize();
+  },
+  beforeCreate(){
+    
   },
 
   methods: {
@@ -151,7 +155,7 @@ export default {
       }
     },
     emptyForm() {
-      this.editedItem.name = "";
+      this.editedItem.reset();
     },
     deleteItem(item) {
       Swal.fire({

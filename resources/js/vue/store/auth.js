@@ -1,22 +1,14 @@
-import Vue from "vue";
-//suport Rutas
 import router from '../plugins/routes'
-export default {
+export const auth = {
     state: {
-        drawer: false,
         darkStile: true,
-        group: null,
         activeUser: null,
+        roles: null,
+        permissions: null,
         user: null,
         tokenExpireIn: 0,
     },
     getters: {
-        drawer: (state) => {
-            return state.drawer;
-        },
-        group: (state) => {
-            return state.group;
-        },
         darkStile: (state) => {
             return state.darkStile;
         },
@@ -26,8 +18,26 @@ export default {
         getTokenExpireIn: (state) => {
             return state.tokenExpireIn;
         },
+        getRoles: (state) => {
+            return state.roles
+        },
+        getPermissions: (state) => {
+            return state.permissions
+        },
     },
     actions: {
+        can({ commit, dispatch }, permission) {
+            var jsPermissions = localStorage.getItem("permissions")
+            var permissions = JSON.parse(jsPermissions);
+            if (!Array.isArray(permissions)) {
+                return router.push({ name: "unauthorized" });
+            }
+            if (permissions.includes(permission)) {
+                return true;
+            } else {
+                return router.push({ name: "unauthorized" });
+            }
+        },
         async login({ commit, dispatch }, credentials) {
             let response = { 'state': 500, 'messaje': 'Error de servidor' };
             await axios.post("/api/admin/login", credentials).then(res => {
@@ -87,17 +97,17 @@ export default {
         SET_DARK_STILE(state, value) {
             state.darkStile = value;
         },
-        SET_DRAWER_STATE(state, value) {
-            state.drawer = value;
-        },
-        SET_GROUP_STATE(state, value) {
-            state.group = value;
-        },
         SET_TOKEN_EXPIRE_IN(state, value) {
             state.tokenExpireIn = value;
         },
         SET_USER(state, user) {
             state.user = user;
+        },
+        SET_ROLES(state, roles) {
+            state.roles = roles;
+        },
+        SET_PERMISSIONS(state, permissions) {
+            state.permissions = permissions;
         },
     },
     modules: {}

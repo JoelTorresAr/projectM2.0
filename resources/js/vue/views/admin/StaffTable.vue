@@ -340,8 +340,12 @@ export default {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "staff.index");
     this.initialize();
     this.getRoles();
     this.loadformdates();
@@ -442,15 +446,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.subsidiary_id = ""),
-        (this.editedItem.workposition_id = ""),
-        (this.editedItem.district_id = ""),
-        (this.editedItem.address = ""),
-        (this.editedItem.address2 = ""),
-        (this.editedItem.name = ""),
-        (this.editedItem.lastname = ""),
-        (this.editedItem.phone = ""),
-        (this.editedItem.email = "");
+      this.editedItem.reset();
     },
     showItem(item) {
       //let itemselected = this.staff.find(element=>element==item);

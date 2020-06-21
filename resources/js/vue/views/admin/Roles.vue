@@ -179,8 +179,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "roles.index");
     this.initialize();
     this.getPermissions();
   },
@@ -234,9 +238,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = ""),
-        (this.editedItem.description = ""),
-        (this.editedItem.permissions = []);
+      this.editedItem.reset()
     },
     deleteItem(item) {
       Swal.fire({

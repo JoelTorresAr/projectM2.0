@@ -4,7 +4,7 @@
       :headers="headers"
       :items="credentials"
       item-key="id"
-      sort-by="staff_id"
+      sort-by="name"
       class="elevation-1"
       :loading="loading"
       loading-text="Cargando... Por favor espere"
@@ -176,11 +176,11 @@ export default {
         width: "15rem",
         align: "center"
       },
-      { text: "Fecha de creación", value: "created_at", align: "center" },
-      { text: "Fecha de modificación", value: "updated_at", align: "center" },
       { text: "Correo", value: "email", align: "center" },
       { text: "Estado", value: "staff", align: "center" },
       { text: "Usuario", value: "staffname", align: "center" },
+      { text: "Fecha de creación", value: "created_at", align: "center" },
+      { text: "Fecha de modificación", value: "updated_at", align: "center" },
       { text: "Actions", value: "actions", sortable: false },
       { text: "Roles", value: "data-table-expand" }
     ],
@@ -214,8 +214,12 @@ export default {
       val || this.closeStaffModal();
     }
   },
+  beforeCreate() {
+   
+  },
 
   created() {
+     this.$store.dispatch("can", "admins.index");
     this.initialize();
     this.getRoles();
   },
@@ -312,13 +316,7 @@ export default {
       }
     },
     emptyForm() {
-      this.editedItem.staff_id = "";
-      (this.editedItem.name = ""),
-        (this.editedItem.email = ""),
-        (this.editedItem.password = ""),
-        (this.editedItem.password_confirmation = ""),
-        (this.editedItem.description = "");
-      this.editedItem.roles = [];
+      this.editedItem.reset();
     },
     getColor(status) {
       return status !== null ? "green" : "red";

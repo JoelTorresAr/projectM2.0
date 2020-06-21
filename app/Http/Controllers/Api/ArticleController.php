@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use App\models\Article;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -23,7 +25,7 @@ class ArticleController extends Controller
             'offer:offers.id,offers.name,offers.discount',
             'category:categories.id,categories.name',
             'shelf:shelves.id,shelves.name',
-            'subsidiary' => function ($query) use($subsidiary){
+            'subsidiary' => function ($query) use ($subsidiary) {
                 $query->select('subsidiaries.id', 'subsidiaries.name as subsidiary');
                 //->where('subsidiaries.id',$subsidiary);
             },
@@ -39,22 +41,22 @@ class ArticleController extends Controller
     public function indexbysubsidiary($id)
     {
         return DB::table('articles')
-        ->join('categories', 'articles.category_id', '=', 'categories.id')
-        ->join('providers', 'articles.provider_id', '=', 'providers.id')
-        ->leftjoin('offers', 'articles.offer_id', '=', 'offers.id')
-        ->join('shelves', 'articles.shelf_id', '=', 'shelves.id')
-        ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
-        ->select(
-            'articles.*',
-            'categories.name as category',
-            'providers.name as provider',
-            'offers.name as offer',
-            'shelves.name as shelf',
-            'subsidiaries.name as subsidiary',
-            'subsidiaries.id as subsidiary_id',
-        )
-        ->where('subsidiaries.id',$id)
-        ->orderBy('subsidiary')->get();
+            ->join('categories', 'articles.category_id', '=', 'categories.id')
+            ->join('providers', 'articles.provider_id', '=', 'providers.id')
+            ->leftjoin('offers', 'articles.offer_id', '=', 'offers.id')
+            ->join('shelves', 'articles.shelf_id', '=', 'shelves.id')
+            ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
+            ->select(
+                'articles.*',
+                'categories.name as category',
+                'providers.name as provider',
+                'offers.name as offer',
+                'shelves.name as shelf',
+                'subsidiaries.name as subsidiary',
+                'subsidiaries.id as subsidiary_id',
+            )
+            ->where('subsidiaries.id', $id)
+            ->orderBy('subsidiary')->get();
     }
 
     /**
@@ -65,17 +67,24 @@ class ArticleController extends Controller
      */
     public function store(ArticleStoreRequest $request)
     {
-        $article = Article::create([
+        //Imagen Procesed
+        $photo = request()->file('file');
+        $photoUrl = $photo->store('public/img');
+        $mirrorUrl = Storage::url($photoUrl);
+        //Article Processed
+        $user = auth('admin')->user();
+        $userValided = Admin::find($user['id']);
+        $userValided->articles()->create([
             'category_id'    => $request['category_id'],
             'shelf_id'       => $request['shelf_id'],
             'provider_id'    => $request['provider_id'],
+            'offer_id'       => $request['offer_id'],
             'name'           => $request['name'],
             'purchaseprice'  => (float) $request['purchaseprice'],
             'saleprice'      => (float) $request['saleprice'],
             'description'    => $request['description'],
+            'file'           => $mirrorUrl,
         ]);
-
-        $article->offers()->attach($request['offer_id']);
 
         return ['status' => '200', 'message' => 'Creado con exito'];
     }
@@ -87,12 +96,39 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleUpdateRequest $request, $id)
+    public function update(ArticleUpdateRequest $request, Article $article)
     {
-        $igv = Article::find($id);
-        $igv->fill([
-            'mount' => (float) $request['mount'],
-        ])->save();
+        if ($request->hasFile('file')) {
+            Storage::delete($article['file']);
+            //Imagen Procesed
+            $photo = request()->file('file');
+            $photoUrl = $photo->store('public/img');
+            $mirrorUrl = Storage::url($photoUrl);
+            //Article Processed
+            $article->update([
+                'category_id'    => $request['category_id'],
+                'shelf_id'       => $request['shelf_id'],
+                'provider_id'    => $request['provider_id'],
+                'offer_id'       => $request['offer_id'],
+                'name'           => $request['name'],
+                'purchaseprice'  => (float) $request['purchaseprice'],
+                'saleprice'      => (float) $request['saleprice'],
+                'description'    => $request['description'],
+                'file'           => $mirrorUrl,
+            ]);
+        } else {
+            $article->update([
+                'category_id'    => $request['category_id'],
+                'shelf_id'       => $request['shelf_id'],
+                'provider_id'    => $request['provider_id'],
+                'offer_id'       => $request['offer_id'],
+                'name'           => $request['name'],
+                'purchaseprice'  => (float) $request['purchaseprice'],
+                'saleprice'      => (float) $request['saleprice'],
+                'description'    => $request['description'],
+            ]);
+        }
+
 
         return ['status' => '200', 'message' => 'Editado con exito'];
     }

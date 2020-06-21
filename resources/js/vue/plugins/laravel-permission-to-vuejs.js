@@ -1,7 +1,10 @@
+import store from '../store/'
 export default {
     install(Vue, options) {
         Vue.prototype.can = function(value) {
-            var permissions = window.Laravel.jsPermissions.permissions;
+            //var jsPermissions = store.state.permissions;
+            var jsPermissions = localStorage.getItem("permissions")
+            var permissions = JSON.parse(jsPermissions);
             var _return = false;
             if (!Array.isArray(permissions)) {
                 return false;
@@ -26,7 +29,8 @@ export default {
         }
 
         Vue.prototype.is = function(value) {
-            var roles = window.Laravel.jsPermissions.roles;
+            var jsRoles = localStorage.getItem("roles")
+            var roles = JSON.parse(jsRoles)
             var _return = false;
             if (!Array.isArray(roles)) {
                 return false;

@@ -94,7 +94,7 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva ciudad" : "Editar ciudad";
-    },
+    }
   },
 
   watch: {
@@ -104,7 +104,11 @@ export default {
   },
 
   created() {
+    this.$store.dispatch("can", "cities.index");
     this.initialize();
+  },
+  beforeCreate() {
+    
   },
 
   methods: {
@@ -152,7 +156,7 @@ export default {
       }
     },
     emptyForm() {
-      this.editedItem.name = "";
+      this.editedItem.reset();
     },
     deleteItem(item) {
       Swal.fire({

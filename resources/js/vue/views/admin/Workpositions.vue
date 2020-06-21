@@ -119,8 +119,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "workpositions.index");
     this.initialize();
     this.getWorkstations();
   },
@@ -170,7 +174,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = ""), (this.editedItem.workstation_id = "");
+      this.editedItem.reset();
     },
     deleteItem(item) {
       Swal.fire({

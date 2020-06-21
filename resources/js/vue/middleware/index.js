@@ -6,5 +6,5 @@ export default {
     authAdmin,
     guestAdmin,
     authDealer,
-    guestDealer
+    guestDealer,
 }

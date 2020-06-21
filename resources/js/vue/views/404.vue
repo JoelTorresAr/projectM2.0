@@ -1,15 +1,33 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-9">
-    <section class="text-center">
-      <div class="card">
-        <div class="card-header"><h1><strong> 404 ...</strong></h1></div>
-        <div class="card-body">
-          <p>Componente no encontrado</p>
-        </div>
-        <img src="../../../img/404.png" class="card-img-top" alt="...">
-     </div>
-    </section>
-    </div>
-  </div>
+  <v-app>
+    <v-content>
+      <v-container fill-height fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="8">
+            <v-card class="elevation-12">
+              <v-row>
+                <v-col cols="12">
+                  <v-card-text class="mt-10">
+                    <h1 class="text-center display-2 orange--text text--accent-4">
+                      <strong>Error 404 ...</strong>
+                    </h1>
+                    <v-img src="/images/404.jpg" aspect-ratio="2" contain></v-img>
+                    <h3 class="text-center orange--text mb-10">Componente no encontrado</h3>
+                    <a href='https://www.freepik.com/free-photos-vectors/background'>Background vector created by bluelela - www.freepik.com</a>
+                  </v-card-text>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
+<script>
+export default {
+  created() {
+    this.$vuetify.theme.dark = this.$store.getters.darkStile;
+  },
+};
+</script>

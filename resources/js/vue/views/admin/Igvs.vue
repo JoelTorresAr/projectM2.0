@@ -105,8 +105,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "igvs.index");
     this.initialize();
   },
 
@@ -154,7 +158,7 @@ export default {
       }
     },
     emptyForm() {
-      this.editedItem.mount = "";
+      this.editedItem.reset();
     },
     deleteItem(item) {
       Swal.fire({

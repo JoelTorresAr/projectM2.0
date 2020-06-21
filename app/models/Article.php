@@ -13,10 +13,18 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'category_id',
+        'shelf_id',
+        'provider_id',
+        'offer_id',
+        'name',
+        'purchaseprice',
+        'saleprice',
+        'description',
+        'file'
     ];
 
-     /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array

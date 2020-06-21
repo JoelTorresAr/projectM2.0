@@ -117,8 +117,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "cities.index");
     this.initialize();
     this.getcities();
   },
@@ -168,7 +172,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = ""), (this.editedItem.city_id = "");
+      this.editedItem.reset();
     },
     deleteItem(item) {
       Swal.fire({

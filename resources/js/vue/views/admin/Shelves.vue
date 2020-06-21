@@ -138,8 +138,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "shelves.index");
     this.initialize();
     this.getsubsidiaries();
   },
@@ -191,7 +195,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = ""), (this.editedItem.subsidiary_id = "");
+      this.editedItem.reset()
     },
     deleteItem(item) {
       Swal.fire({

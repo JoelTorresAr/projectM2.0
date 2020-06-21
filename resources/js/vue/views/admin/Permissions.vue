@@ -117,8 +117,12 @@ export default {
       val || this.close();
     }
   },
+  beforeCreate() {
+    
+  },
 
   created() {
+    this.$store.dispatch("can", "permissions.index");
     this.initialize();
   },
 
@@ -167,7 +171,7 @@ export default {
       }
     },
     emptyForm() {
-      (this.editedItem.name = ""), (this.editedItem.description = "");
+     this.editedItem.reset();
     },
     deleteItem(item) {
       Swal.fire({

@@ -110,7 +110,8 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     
     //CategoryController
     Route::group(['prefix' => 'categories','namespace' => 'Api'], function () {
-        Route::get('/','CategoryController@index');
+        Route::get('/','CategoryController@index');        
+        Route::get('list/onlyname','CategoryController@listOnlyName');
         Route::post('store','CategoryController@store');
         Route::put('update/{category}','CategoryController@update');
         Route::delete('destroy/{category}','CategoryController@destroy');
@@ -119,6 +120,7 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     //OfferController
     Route::group(['prefix' => 'offers','namespace' => 'Api'], function () {
         Route::get('/','OfferController@index');
+        Route::get('list/onlyname','OfferController@listOnlyName');
         Route::post('store','OfferController@store');
         Route::put('update/{offer}','OfferController@update');
         Route::delete('destroy/{offer}','OfferController@destroy');
@@ -127,6 +129,7 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     //ProviderController
     Route::group(['prefix' => 'providers','namespace' => 'Api'], function () {
         Route::get('/','ProviderController@index');
+        Route::get('list/onlyname','ProviderController@listOnlyName');
         Route::post('store','ProviderController@store');
         Route::put('update/{provider}','ProviderController@update');
         Route::delete('destroy/{provider}','ProviderController@destroy');
@@ -151,6 +154,7 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     //ShelfController
     Route::group(['prefix' => 'shelves','namespace' => 'Api'], function () {
         Route::get('/','ShelfController@index');
+        Route::get('list/onlynamebysubsidiary/{subsidiary}','ShelfController@listOnlyNamebySubsidiary');
         Route::post('store','ShelfController@store');
         Route::put('update/{shelf}','ShelfController@update');
         Route::delete('destroy/{shelf}','ShelfController@destroy');
@@ -161,8 +165,8 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
         Route::get('/','ArticleController@index');
         Route::get('listby/{subsidiary}','ArticleController@indexbysubsidiary');
         Route::post('store','ArticleController@store');
-        Route::put('update/{shelf}','ArticleController@update');
-        Route::delete('destroy/{shelf}','ArticleController@destroy');
+        Route::post('update/{article}','ArticleController@update');
+        Route::delete('destroy/{article}','ArticleController@destroy');
     });
 
     //PhotosController

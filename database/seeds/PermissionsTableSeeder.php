@@ -35,56 +35,243 @@ class PermissionsTableSeeder extends Seeder
             'name'       => 'admins.destroy',
             'description' => 'Elimina las credenciales'
         ]);
+        //Articles
+        Permission::create([
+            'name'       => 'articles.index',
+            'description'=> 'Lista y navega los articulos'
+        ]);
+        Permission::create([
+            'name'       => 'articles.create',
+            'description'=> 'Crea articulo'
+        ]);
+        Permission::create([
+            'name'       => 'articles.edit',
+            'description'=> 'Edita el articulo'
+        ]);
+        Permission::create([
+            'name'       => 'articles.destroy',
+            'description'=> 'Elimina un articulo'
+        ]);
+        //Categories
+        Permission::create([
+            'name'       => 'categories.index',
+            'description'=> 'Lista y navega las categorias de los productos'
+        ]);
+        Permission::create([
+            'name'       => 'categories.create',
+            'description'=> 'Crea las categorias de los productos'
+        ]);
+        Permission::create([
+            'name'       => 'categories.edit',
+            'description'=> 'Edita las categorias de los productos'
+        ]);
+        Permission::create([
+            'name'       => 'categories.destroy',
+            'description'=> 'Elimina las categorias de los productos'
+        ]);
+        //Cities
+        Permission::create([
+            'name'       => 'cities.index',
+            'description'=> 'Lista y navega las ciudades'
+        ]);
+        Permission::create([
+            'name'       => 'cities.create',
+            'description'=> 'Crea las ciudades'
+        ]);
+        Permission::create([
+            'name'       => 'cities.edit',
+            'description'=> 'Edita las ciudades'
+        ]);
+        Permission::create([
+            'name'       => 'cities.destroy',
+            'description'=> 'Elimina las ciudades'
+        ]);
+        //Dashboard
+        Permission::create([
+            'name'       => 'dashboards.index',
+            'description'=> 'Lista y navega los dashboards'
+        ]);
+        Permission::create([
+            'name'       => 'dashboards.create',
+            'description'=> 'Crea los dashboards'
+        ]);
+        Permission::create([
+            'name'       => 'dashboards.edit',
+            'description'=> 'Edita los dashboards'
+        ]);
+        Permission::create([
+            'name'       => 'dashboards.destroy',
+            'description'=> 'Elimina los dashboards'
+        ]);
+        //Dealers
+        Permission::create([
+            'name'       => 'dealers.index',
+            'description'=> 'Lista y navega los dealers'
+        ]);
+        Permission::create([
+            'name'       => 'dealers.create',
+            'description'=> 'Crea los dealers'
+        ]);
+        Permission::create([
+            'name'       => 'dealers.edit',
+            'description'=> 'Edita los dealers'
+        ]);
+        Permission::create([
+            'name'       => 'dealers.destroy',
+            'description'=> 'Elimina los dealers'
+        ]);
         //Districts
         Permission::create([
             'name'       => 'districts.index',
-            'description'=> 'Lista y navega los distritos y ciudades'
+            'description'=> 'Lista y navega los distritos'
         ]);
         Permission::create([
             'name'       => 'districts.create',
-            'description'=> 'Crea distritos y ciudades'
+            'description'=> 'Crea distritos'
         ]);
         Permission::create([
             'name'       => 'districts.edit',
-            'description'=> 'Edita los distritos y ciudades'
+            'description'=> 'Edita los distritos'
         ]);
         Permission::create([
             'name'       => 'districts.destroy',
-            'description'=> 'Elimina los distritos y ciudades'
+            'description'=> 'Elimina los distritos'
         ]);
-        //WorkStations
+        //Igvs
         Permission::create([
-            'name'       => 'workstations.index',
-            'description'=> 'Lista y navega las areas de trabajo'
-        ]);
-        Permission::create([
-            'name'       => 'workstations.create',
-            'description'=> 'Crea areas de trabajo'
+            'name'       => 'igvs.index',
+            'description'=> 'Lista y navega los IGVS'
         ]);
         Permission::create([
-            'name'       => 'workstations.edit',
-            'description'=> 'Editar las areas de trabajo'
+            'name'       => 'igvs.create',
+            'description'=> 'Crea los IGVS'
         ]);
         Permission::create([
-            'name'       => 'workstations.destroy',
-            'description'=> 'Elimina las areas de trabajo'
-        ]);
-        //WorkPositions
-        Permission::create([
-            'name'       => 'workpositions.index',
-            'description'=> 'Lista y navega los puestos de trabajo'
+            'name'       => 'igvs.edit',
+            'description'=> 'Edita los IGVS'
         ]);
         Permission::create([
-            'name'       => 'workpositions.create',
-            'description'=> 'Crea puestos de trabajo'
+            'name'       => 'igvs.destroy',
+            'description'=> 'Elimina los IGVS'
+        ]);
+        //Offers
+        Permission::create([
+            'name'       => 'offers.index',
+            'description'=> 'Lista y navega las ofertas'
         ]);
         Permission::create([
-            'name'       => 'workpositions.edit',
-            'description'=> 'Edita los puestos de trabajo'
+            'name'       => 'offers.create',
+            'description'=> 'Crea ofertas'
         ]);
         Permission::create([
-            'name'       => 'workpositions.destroy',
-            'description'=> 'Elimina un puesto de trabajo'
+            'name'       => 'offers.edit',
+            'description'=> 'Edita las ofertas'
+        ]);
+        Permission::create([
+            'name'       => 'offers.destroy',
+            'description'=> 'Elimina las ofertas'
+        ]);
+        //Permissions
+        Permission::create([
+            'name'       => 'permissions.index',
+            'description'=> 'Lista y navega los permisos'
+        ]);
+        Permission::create([
+            'name'       => 'permissions.create',
+            'description'=> 'Crea ofertas'
+        ]);
+        Permission::create([
+            'name'       => 'permissions.edit',
+            'description'=> 'Edita los permisos'
+        ]);
+        Permission::create([
+            'name'       => 'permissions.destroy',
+            'description'=> 'Elimina los permisos'
+        ]);
+        //Prooftypes
+        Permission::create([
+            'name'       => 'prooftypes.index',
+            'description'=> 'Lista y navega los tipos de comprobantes de venta'
+        ]);
+        Permission::create([
+            'name'       => 'prooftypes.create',
+            'description'=> 'Crea los tipos de comprobantes de venta'
+        ]);
+        Permission::create([
+            'name'       => 'prooftypes.edit',
+            'description'=> 'Edita los tipos de comprobantes de venta'
+        ]);
+        Permission::create([
+            'name'       => 'prooftypes.destroy',
+            'description'=> 'Elimina los tipos de comprobantes de venta'
+        ]);
+        //Providers
+        Permission::create([
+            'name'       => 'providers.index',
+            'description'=> 'Lista y navega los proveedores'
+        ]);
+        Permission::create([
+            'name'       => 'providers.create',
+            'description'=> 'Crea los proveedores'
+        ]);
+        Permission::create([
+            'name'       => 'providers.edit',
+            'description'=> 'Edita los proveedores'
+        ]);
+        Permission::create([
+            'name'       => 'providers.destroy',
+            'description'=> 'Elimina los proveedores'
+        ]);
+        //Roles
+        Permission::create([
+            'name'       => 'roles.index',
+            'description'=> 'Lista y navega los roles'
+        ]);
+        Permission::create([
+            'name'       => 'roles.create',
+            'description'=> 'Crea los roles'
+        ]);
+        Permission::create([
+            'name'       => 'roles.edit',
+            'description'=> 'Edita los roles'
+        ]);
+        Permission::create([
+            'name'       => 'roles.destroy',
+            'description'=> 'Elimina los roles'
+        ]);
+        //Shelves
+        Permission::create([
+            'name'       => 'shelves.index',
+            'description'=> 'Lista y navega los estantes'
+        ]);
+        Permission::create([
+            'name'       => 'shelves.create',
+            'description'=> 'Crea personal'
+        ]);
+        Permission::create([
+            'name'       => 'shelves.edit',
+            'description'=> 'Edita los estantes'
+        ]);
+        Permission::create([
+            'name'       => 'shelves.destroy',
+            'description'=> 'Elimina los estantes'
+        ]);
+        //Staff
+        Permission::create([
+            'name'       => 'staff.index',
+            'description'=> 'Lista y navega el personal'
+        ]);
+        Permission::create([
+            'name'       => 'staff.create',
+            'description'=> 'Crea personal'
+        ]);
+        Permission::create([
+            'name'       => 'staff.edit',
+            'description'=> 'Edita el personal'
+        ]);
+        Permission::create([
+            'name'       => 'staff.destroy',
+            'description'=> 'Elimina un personal'
         ]);
         //Subsidiaries
         Permission::create([
@@ -103,22 +290,39 @@ class PermissionsTableSeeder extends Seeder
             'name'       => 'subsidiaries.destroy',
             'description'=> 'Elimina una subisidiarie'
         ]);
-        //Staff
+        //WorkPositions
         Permission::create([
-            'name'       => 'staff.index',
-            'description'=> 'Lista y navega el personal'
+            'name'       => 'workpositions.index',
+            'description'=> 'Lista y navega los puestos de trabajo'
         ]);
         Permission::create([
-            'name'       => 'staff.create',
-            'description'=> 'Crea personal'
+            'name'       => 'workpositions.create',
+            'description'=> 'Crea puestos de trabajo'
         ]);
         Permission::create([
-            'name'       => 'staff.edit',
-            'description'=> 'Edita el personal'
+            'name'       => 'workpositions.edit',
+            'description'=> 'Edita los puestos de trabajo'
         ]);
         Permission::create([
-            'name'       => 'staff.destroy',
-            'description'=> 'Elimina un personal'
+            'name'       => 'workpositions.destroy',
+            'description'=> 'Elimina un puesto de trabajo'
+        ]);
+        //WorkStations
+        Permission::create([
+            'name'       => 'workstations.index',
+            'description'=> 'Lista y navega las areas de trabajo'
+        ]);
+        Permission::create([
+            'name'       => 'workstations.create',
+            'description'=> 'Crea areas de trabajo'
+        ]);
+        Permission::create([
+            'name'       => 'workstations.edit',
+            'description'=> 'Editar las areas de trabajo'
+        ]);
+        Permission::create([
+            'name'       => 'workstations.destroy',
+            'description'=> 'Elimina las areas de trabajo'
         ]);
     }
 }

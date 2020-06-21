@@ -26,6 +26,19 @@ class ProviderController extends Controller
     }
 
     /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+   public function listOnlyName()
+   {
+       return DB::table('providers')
+       ->select('providers.id','providers.name')
+       ->orderBy('providers.name')
+       ->get();
+   }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

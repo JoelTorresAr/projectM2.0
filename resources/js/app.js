@@ -22,7 +22,7 @@ Vue.component('login', require('./vue/views/auth/Login.vue').default)
 import router from './vue/plugins/routes'
 
 //support Formularios
-import { Form, HasError, AlertError } from 'vform'
+import { Form, HasError, AlertError, Errors } from 'vform'
 
 window.Form = Form;
 Vue.component(HasError.name, HasError)
@@ -35,16 +35,23 @@ Vue.use(VueTheMask)
 //support vuetify
 import vuetify from './vue/plugins/vuetify'
 
+import store from "./vue/store/index"
+
 //support Laravel permission to vuejs
 import LaravelPermissionToVueJS from './vue/plugins/laravel-permission-to-vuejs'
 Vue.use(LaravelPermissionToVueJS)
 
-
-import store from "./vue/store/index"
-
 //vueDropzone
 import vueDropzone from 'vue2-dropzone'
 Vue.component('vue-dropzone', vueDropzone);
+
+//idle-vue
+import IdleVue from 'idle-vue'
+const eventsHub = new Vue()
+Vue.use(IdleVue, {
+    eventEmitter: eventsHub,
+    idleTime: (process.env.MIX_VUE_IDLE_TIME_MIN * 60 * 1000)
+})
 
 new Vue({
     el: '#app',
