@@ -18,7 +18,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogForm" persistent max-width="600px">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }" v-if="can('admins.create')">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -29,7 +29,7 @@
                 <form @submit.prevent="save">
                   <v-container>
                     <v-row>
-                      <v-col cols="12">
+                      <v-col cols="12" sm="9">
                         <v-text-field
                           v-model="editedItem.name"
                           label="Nombre*"
@@ -37,6 +37,17 @@
                           :class="{ 'is-invalid': editedItem.errors.has('name') }"
                         ></v-text-field>
                         <has-error class="red--text" :form="editedItem" field="name"></has-error>
+                      </v-col>
+                      <v-col cols="12" sm="3">
+                        <v-switch
+                          v-model="editedItem.active"
+                          label="Estado"
+                          required
+                          :hint="editedItem.active?'Activo':'Inactivo'"
+                          persistent-hint
+                          :class="{ 'is-invalid': editedItem.errors.has('active') }"
+                        ></v-switch>
+                        <has-error class="red--text" :form="editedItem" field="active"></has-error>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
@@ -146,10 +157,10 @@
         </td>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)" v-if="can('admins.edit')">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)" v-if="can('admins.destroy')">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -181,7 +192,7 @@ export default {
       { text: "Usuario", value: "staffname", align: "center" },
       { text: "Fecha de creación", value: "created_at", align: "center" },
       { text: "Fecha de modificación", value: "updated_at", align: "center" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "", value: "actions", sortable: false },
       { text: "Roles", value: "data-table-expand" }
     ],
     credentials: [],
@@ -196,6 +207,7 @@ export default {
       password: "",
       password_confirmation: "",
       description: "",
+      active: true,
       roles: []
     })
   }),
@@ -203,7 +215,7 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nueva credencial" : "Editar credencial";
-    },
+    }
   },
 
   watch: {
@@ -214,12 +226,10 @@ export default {
       val || this.closeStaffModal();
     }
   },
-  beforeCreate() {
-   
-  },
+  beforeCreate() {},
 
   created() {
-     this.$store.dispatch("can", "admins.index");
+    this.$store.dispatch("can", "admins.index");
     this.initialize();
     this.getRoles();
   },

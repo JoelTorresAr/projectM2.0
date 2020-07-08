@@ -39,6 +39,21 @@ class ShelfController extends Controller
         ->get();
     }
 
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listbyDealer($id)
+    {
+        return DB::table('shelves')
+        ->join('subsidiaries','shelves.subsidiary_id','=','subsidiaries.id')
+        ->select('shelves.id','shelves.name','shelves.updated_at','subsidiaries.name as subsidiary')
+        ->where('shelves.dealer_id',$id)
+        ->orderBy('shelves.name')
+        ->get();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

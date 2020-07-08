@@ -9,20 +9,23 @@
       clipped
     >
       <v-list dense>
-        <v-list-item exact :to="{name: 'admin'}" v-if="can('dahsboard.index')">
+        <v-list-item two-line class="miniVariant && 'px-0'">
+          <v-list-item-avatar>
+            <img src="/images/argus2.svg" />
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title>{{user}}</v-list-item-title>
+            <v-list-item-subtitle>Subtext</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+        <v-list-item exact :to="{name: 'admin'}" v-if="can('dashboards.index')">
           <v-list-item-action>
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Dahsboard</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item exact :to="{name: 'staff'}" v-if="can('staff.index')">
-          <v-list-item-action>
-            <v-icon>mdi-account</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Personal</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-group
@@ -31,7 +34,7 @@
           prepend-icon="mdi-storefront"
         >
           <template v-slot:activator>
-            <v-list-item-title>Productos</v-list-item-title>
+            <v-list-item-title>Almacen</v-list-item-title>
           </template>
           <v-list-item exact :to="{name: 'articles'}" v-if="can('articles.index')">
             <v-list-item-title>Productos</v-list-item-title>
@@ -45,7 +48,7 @@
               <v-icon>fas fa-circle-notch</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item exact :to="{name: 'providers'}" v-if="can('providers.index')">
+          <v-list-item exact :to="{name: 'providers'}" v-if="can('providers.optional')">
             <v-list-item-title>Provedores</v-list-item-title>
             <v-list-item-icon>
               <v-icon>fas fa-circle-notch</v-icon>
@@ -57,27 +60,23 @@
               <v-icon>fas fa-circle-notch</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item exact :to="{name: 'igvs'}" v-if="can('igvs.index')">
-            <v-list-item-title>IGV</v-list-item-title>
-            <v-list-item-icon>
-              <v-icon>fas fa-circle-notch</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-          <v-list-item exact :to="{name: 'prooftypes'}" v-if="can('prooftypes.index')">
-            <v-list-item-title>Comprobantes</v-list-item-title>
-            <v-list-item-icon>
-              <v-icon>fas fa-circle-notch</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
         </v-list-group>
         <v-list-group
           no-action
           v-if="can('admins.index | roles.index | permissions.index')"
-          prepend-icon="mdi-lock-open-variant"
+          prepend-icon="mdi-account"
         >
           <template v-slot:activator>
-            <v-list-item-title>Authenticación</v-list-item-title>
+            <v-list-item-title>Usuario</v-list-item-title>
           </template>
+          <v-list-item exact :to="{name: 'staff'}" v-if="can('staff.index')">
+            <v-list-item-content>
+              <v-list-item-title>Personal</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon>fas fa-circle-notch</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
           <v-list-item exact :to="{name: 'credentials'}" v-if="can('admins.index')">
             <v-list-item-title>Credenciales</v-list-item-title>
             <v-list-item-icon>
@@ -111,7 +110,7 @@
               <v-icon>fas fa-circle-notch</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item exact :to="{name: 'roles'}" v-if="can('admins.index')">
+          <v-list-item exact :to="{name: 'consessions'}" v-if="can('admins.index')">
             <v-list-item-title>Concesion</v-list-item-title>
             <v-list-item-icon>
               <v-icon>fas fa-circle-notch</v-icon>
@@ -162,15 +161,19 @@
               <v-icon>fas fa-circle-notch</v-icon>
             </v-list-item-icon>
           </v-list-item>
+          <v-list-item exact :to="{name: 'igvs'}" v-if="can('igvs.index')">
+            <v-list-item-title>IGV</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>fas fa-circle-notch</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+          <v-list-item exact :to="{name: 'prooftypes'}" v-if="can('prooftypes.index')">
+            <v-list-item-title>Comprobantes</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>fas fa-circle-notch</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
         </v-list-group>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-cog</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
       </v-list>
       <v-spacer></v-spacer>
       <v-list-item @click="changeTheme">
@@ -178,7 +181,7 @@
           <v-icon>mdi-brightness-6</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Turn on Lights</v-list-item-title>
+          <v-list-item-title>{{themeMessage}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list-item @click="logout">
@@ -204,9 +207,9 @@
     <v-content>
       <v-container class="fill-height" fluid>
         <v-layout class="justify-center">
-          <v-flex class="shrink">
+         <!-- <v-flex class="shrink"> -->
             <router-view />
-          </v-flex>
+         <!-- </v-flex> -->
         </v-layout>
       </v-container>
     </v-content>
@@ -226,6 +229,8 @@ export default {
   },
   data: () => ({
     drawer: true,
+    darkStile: true,
+    user: null,
     mini: true,
     idleLifeTime: 0,
     idleStatus: false,
@@ -245,22 +250,33 @@ export default {
   computed: {
     time: function() {
       return this.token_timeLeft;
+    },
+    themeMessage() {
+      return this.darkStile === true ? "Encender luces" : "Apagar luces";
+    }
+  },
+  watch: {
+    darkStile(val) {
+      this.$vuetify.theme.dark = val;
+      this.$store.commit("SET_DARK_STILE", val);
     }
   },
   created() {
-    this.$vuetify.theme.dark = this.$store.getters.darkStile;
-    this.token_expires_in = new Date(localStorage.getItem("token_expires_in"));
+    this.darkStile = this.$store.getters.darkStile;
+    this.$vuetify.theme.dark = this.darkStile;
+    //localStorage.getItem("token_expires_in")
+    this.token_expires_in = new Date(this.$store.getters.getTokenExpireIn);
     this.countdownToken();
     this.idleLifeTime = process.env.MIX_VUE_IDLE_LIFETIME_MIN * 60;
+    this.user = this.$store.getters.getUser;
   },
   mounted: function() {},
   methods: {
     changeTheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      this.darkStile = !this.darkStile;
     },
     logout() {
-      localStorage.removeItem("roles");
-      localStorage.removeItem("permissions");
+      localStorage.removeItem("vuex");
       axios.post("/api/admin/logout").then(({ data }) => {
         if (data.message) {
           this.$router.push({ name: "authenticate" });

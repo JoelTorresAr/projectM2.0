@@ -29,6 +29,7 @@
         "dropzone": "^5.7.1",
         "idle-vue": "^2.0.5",
         "moment": "^2.25.3",
+        "secure-ls": "^1.2.6",
         "sweetalert2": "^9.13.4",
         "toastr": "^2.1.4",
         "vform": "^1.0.1",

@@ -99,21 +99,21 @@ export default {
         .then(res => {
           if (res.data.access_token) {
             toastr.success("Acceso correcto");
-            //window.location.href = "/new/window/location";
-            localStorage.setItem("token_expires_in", res.data.expires_in);
+            //window.location.href = "/new/window/location";      
+            this.$store.commit("SET_TOKEN_EXPIRE_IN", res.data.expires_in);
+            //localStorage.setItem("token_expires_in", );
             var roles = [];
             var permissions = [];
             for (var i = 0; i < res.data.user.roles.length; i++) {
-              roles.push(res.data.user.roles[i].name);
+              roles.push(res.data.user.roles[i].name)
             }
             for (var i = 0; i < res.data.user.permissions.length; i++) {
-              permissions.push(res.data.user.permissions[i].name);
+              permissions.push(res.data.user.permissions[i].name)
             }
-            //this.$store.commit("SET_ROLES", JSON.stringify(roles));
-            //this.$store.commit("SET_PERMISSIONS", JSON.stringify(permissions));
-            localStorage.setItem("roles", JSON.stringify(roles));
-            localStorage.setItem("permissions", JSON.stringify(permissions));
-            this.$router.push({ name: "admin" });
+            this.$store.commit("SET_ROLES", JSON.stringify(roles))
+            this.$store.commit("SET_PERMISSIONS", JSON.stringify(permissions))
+            this.$store.commit("SET_USER", res.data.user.name)
+            this.$router.push({ name: "admin" })
             //location.reload();
           }
         })

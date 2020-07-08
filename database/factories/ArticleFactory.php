@@ -16,6 +16,7 @@ $factory->define(Article::class, function (Faker $faker) {
         'articlable_id'   => rand(1, 10),
         'articlable_type' => $faker->randomElement($articlabe), 
         'name'            => $faker->word(),
+        'stock'           => rand(100,500),
         'purchaseprice'   => $purchaseprice,
         'saleprice'       => $faker->randomFloat(2, $purchaseprice, $purchaseprice + 5),
         'description'     => $faker->text($maxNbChars = 100),

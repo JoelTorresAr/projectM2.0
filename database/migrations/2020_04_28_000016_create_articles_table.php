@@ -22,6 +22,7 @@ class CreateArticlesTable extends Migration
             $table->integer('articlable_id')->unsigned();
             $table->string('articlable_type');
             $table->string('name');
+            $table->integer('stock');
             $table->decimal('purchaseprice',18,2);
             $table->decimal('saleprice',18,2);
             $table->text('description');

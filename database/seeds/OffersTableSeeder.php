@@ -15,11 +15,29 @@ class OffersTableSeeder extends Seeder
         Offer::create([
             'name'     => 'Embutidos 2x1',
             'discount' => 50,
+            'offerable_id'   => rand(1, 10),
+            'oferable_type' => App\Dealer::class, 
             'active'   => true,
         ]);
         Offer::create([
             'name'     => '15% de descuento en vinos',
             'discount' => 15,
+            'offerable_id'   => rand(1, 10),
+            'oferable_type' => App\Dealer::class, 
+            'active'   => true,
+        ]);
+        Offer::create([
+            'name'     => 'Embutidos 2x1',
+            'discount' => 50,
+            'offerable_id'   => rand(1, 10),
+            'oferable_type' => App\Admin::class, 
+            'active'   => true,
+        ]);
+        Offer::create([
+            'name'     => '15% de descuento en vinos',
+            'discount' => 15,
+            'offerable_id'   => rand(1, 10),
+            'oferable_type' => App\Admin::class, 
             'active'   => true,
         ]);
     }

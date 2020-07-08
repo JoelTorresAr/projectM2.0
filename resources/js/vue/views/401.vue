@@ -11,7 +11,7 @@
                     <h1 class="text-center display-2 orange--text text--accent-4">
                       <strong>Error 401 ...</strong>
                     </h1>
-                    <v-img src="/images/401.jpg" aspect-ratio="2" contain></v-img>
+                    <v-img src="/images/401_2.svg" aspect-ratio="2" contain></v-img>
                     <h3 class="text-center orange--text mb-10">Acceso no autorizado!!!</h3>
                   </v-card-text>
                 </v-col>

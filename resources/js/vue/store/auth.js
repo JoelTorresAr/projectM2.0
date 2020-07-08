@@ -1,4 +1,5 @@
 import router from '../plugins/routes'
+import store from '../store/'
 export const auth = {
     state: {
         darkStile: true,
@@ -27,7 +28,7 @@ export const auth = {
     },
     actions: {
         can({ commit, dispatch }, permission) {
-            var jsPermissions = localStorage.getItem("permissions")
+            var jsPermissions = store.getters.getPermissions;
             var permissions = JSON.parse(jsPermissions);
             if (!Array.isArray(permissions)) {
                 return router.push({ name: "unauthorized" });

@@ -276,7 +276,7 @@ export default {
 
   methods: {
     initialize() {
-      axios.get("/api/subsidiaries/list/OnlyName").then(({ data }) => {
+      axios.get("/api/subsidiaries/list/onlyname").then(({ data }) => {
         this.subsidiaries = data;
         this.loadingSubsidiary = false;
       });

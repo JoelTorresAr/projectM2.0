@@ -174,6 +174,14 @@ let routes = [{
                     middleware: [Middlewares.authAdmin]
                 },
             },
+            {
+                path: '/admin/dashboard/concessions',
+                name: 'consessions',
+                component: require('../views/admin/Concessions').default,
+                meta: {
+                    middleware: [Middlewares.authAdmin]
+                },
+            },
         ],
     },
     {

@@ -40,7 +40,7 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     //SubsidiaryController
     Route::group(['prefix' => 'subsidiaries','namespace' => 'Api'], function () {
     Route::get('/','SubsidiaryController@index');
-    Route::get('list/OnlyName','SubsidiaryController@listOnlyName');
+    Route::get('list/onlyname','SubsidiaryController@listOnlyName');
     Route::post('store','SubsidiaryController@store');
     Route::put('update/{subsidiary}','SubsidiaryController@update');
     Route::delete('destroy/{subsidiary}','SubsidiaryController@destroy');
@@ -84,7 +84,7 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     //AdminController
     Route::group(['prefix' => 'admins','namespace' => 'Api'], function () {
         Route::get('/','AdminController@list');
-        Route::get('list/OnlyName','AdminController@listOnlyName');
+        Route::get('list/onlyname','AdminController@listOnlyName');
         Route::post('store','AdminController@store'); 
         Route::put('update/{admin}','AdminController@update');
         Route::put('assign/{admin}','AdminController@assign');
@@ -155,6 +155,7 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     Route::group(['prefix' => 'shelves','namespace' => 'Api'], function () {
         Route::get('/','ShelfController@index');
         Route::get('list/onlynamebysubsidiary/{subsidiary}','ShelfController@listOnlyNamebySubsidiary');
+        Route::get('list/bydealer/{dealer}','ShelfController@listbyDealer');
         Route::post('store','ShelfController@store');
         Route::put('update/{shelf}','ShelfController@update');
         Route::delete('destroy/{shelf}','ShelfController@destroy');
@@ -172,6 +173,25 @@ Route::group(['prefix' => 'staff','namespace' => 'Api'], function () {
     //PhotosController
     Route::group(['prefix' => 'photos','namespace' => 'Api'], function () {
         Route::post('store/article','PhotosController@storeArticle');
+    });
+
+    //DealerController
+    Route::group(['prefix' => 'dealers','namespace' => 'Api'], function () {
+        Route::get('/','DealerController@index');
+        Route::get('list/onlyname','DealerController@listOnlyName');
+        Route::post('store','DealerController@store');
+        Route::put('update/{dealer}','DealerController@update');
+        Route::delete('destroy/{dealer}','DealerController@destroy');
+    });
+
+    //ConcessionController
+    Route::group(['prefix' => 'concessions','namespace' => 'Api'], function () {
+       // Route::get('/','ConcessionController@index');
+       Route::get('list/shelves/{subsidiary}','ConcessionController@listShelvesAvailablesbySubsidiary');
+        //Route::get('list/onlyname','ConcessionController@listOnlyName');
+        Route::post('store/{dealer}','ConcessionController@store');
+       // Route::put('update/{dealer}','ConcessionController@update');
+        Route::delete('destroy/{shelf}','ConcessionController@destroy');
     });
 });
 

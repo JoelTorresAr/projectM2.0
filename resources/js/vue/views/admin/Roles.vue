@@ -19,7 +19,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogForm" persistent max-width="600px">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }" v-if="can('roles.create')">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -128,10 +128,10 @@
         </td>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)" v-if="can('roles.edit')">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)" v-if="can('roles.destroy')">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -152,7 +152,7 @@ export default {
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
       { text: "Descripción", value: "description" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "", value: "actions", sortable: false },
       { text: "Permisos", value: "data-table-expand" }
     ],
     roles: [],

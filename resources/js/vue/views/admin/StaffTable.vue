@@ -16,7 +16,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogForm" persistent max-width="630px">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }" v-if="can('staff.create')">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -199,13 +199,13 @@
         <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)" v-if="can('staff.edit')">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
         <v-btn color="teal" fab x-small dark @click="showItem(item)">
           <v-icon>mdi-eye</v-icon>
         </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)" v-if="can('staff.destroy')">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -298,7 +298,7 @@ export default {
       { text: "Sucursal", value: "subsidiary" },
       { text: "Puesto", value: "workposition" },
       { text: "Estado", value: "status" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "", value: "actions", sortable: false }
     ],
     staff: [],
     subsidiaries: [],
@@ -455,7 +455,7 @@ export default {
     },
     getRoles() {
       axios
-        .get("/api/admins/list/OnlyName")
+        .get("/api/admins/list/onlyname")
         .then(({ data }) => (this.credentials = data));
     },
     getColor(status) {

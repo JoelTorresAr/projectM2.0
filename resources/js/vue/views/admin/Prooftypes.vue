@@ -15,7 +15,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogForm" persistent max-width="600px">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }" v-if="can('prooftypes.create')">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -58,10 +58,10 @@
       <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
       <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)" v-if="can('prooftypes.edit')">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)" v-if="can('prooftypes.destroy')">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -81,7 +81,7 @@ export default {
       { text: "Nombre", value: "name" },
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "", value: "actions", sortable: false }
     ],
     prooftypes: [],
     editedIndex: -1,

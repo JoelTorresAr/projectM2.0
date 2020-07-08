@@ -17,7 +17,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogForm" persistent max-width="600px">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }" v-if="can('shelves.create')">
               <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -79,17 +79,17 @@
       </template>
       <template v-slot:item.rentalstatus="{ item }">
         <v-chip
-          :color="getColor(item.rentalstatus)"
+          :color="getColor(item.dealer_id)"
           dark
-        >{{ item.rentalstatus === "ENABLE" ? "Concecionado" : "Sin concecion"}}</v-chip>
+        >{{ item.dealer_id !== null ? "Concecionado" : "Sin concecion"}}</v-chip>
       </template>
       <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
       <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)" v-if="can('shelves.edit')">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)" v-if="can('shelves.destroy')">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -112,7 +112,7 @@ export default {
       { text: "Consesionario", value: "dealer" },
       { text: "Fecha de creación", value: "created_at" },
       { text: "Fecha de modificación", value: "updated_at" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "", value: "actions", sortable: false }
     ],
     rentalstatus: ["ENABLE", "DISABLE"],
     shelves: [],
@@ -240,7 +240,7 @@ export default {
       axios.get(url).then(({ data }) => (this.subsidiaries = data));
     },
     getColor(status) {
-      return status === "ENABLE" ? "green" : "red";
+      return status !== null ? "green" : "red";
     }
   }
 };

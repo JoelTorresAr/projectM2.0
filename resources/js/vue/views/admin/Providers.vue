@@ -15,7 +15,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogForm" persistent max-width="600px">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }" v-if="can('providers.create')">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -112,10 +112,10 @@
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)" v-if="can('providers.edit')">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)" v-if="can('providers.destroy')">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -136,7 +136,7 @@ export default {
       { text: "Ciudad", value: "city" },
       { text: "R.U.C.", value: "ruc" },
       { text: "Telefono", value: "phone1" },
-      { text: "Actions", value: "actions", sortable: false }
+      { text: "", value: "actions", sortable: false }
     ],
     providers: [],
     cities: [],

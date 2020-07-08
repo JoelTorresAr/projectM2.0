@@ -2,15 +2,12 @@
   <v-app id="app">
     <v-data-table
       :headers="headers"
-      :items="credentials"
+      :items="dealers"
       item-key="id"
       sort-by="staff_id"
       class="elevation-1"
       :loading="loading"
       loading-text="Cargando... Por favor espere"
-      :single-expand="singleExpand"
-      :expanded.sync="expanded"
-      show-expand
     >
       <template v-slot:top>
         <v-toolbar flat class="mt-2">
@@ -18,7 +15,7 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <v-dialog v-model="dialogForm" persistent max-width="600px">
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }" v-if="can('dealers.create')">
               <v-btn color="primary" class="mb-2" dark v-on="on">Agregar nuevo</v-btn>
             </template>
             <v-card>
@@ -29,7 +26,7 @@
                 <form @submit.prevent="save">
                   <v-container>
                     <v-row>
-                      <v-col cols="12">
+                      <v-col cols="12" sm="9">
                         <v-text-field
                           v-model="editedItem.name"
                           label="Nombre*"
@@ -37,6 +34,17 @@
                           :class="{ 'is-invalid': editedItem.errors.has('name') }"
                         ></v-text-field>
                         <has-error class="red--text" :form="editedItem" field="name"></has-error>
+                      </v-col>
+                      <v-col cols="12" sm="3">
+                        <v-switch
+                          v-model="editedItem.active"
+                          label="Estado"
+                          required
+                          :hint="editedItem.active?'Activo':'Inactivo'" 
+                          persistent-hint
+                          :class="{ 'is-invalid': editedItem.errors.has('active') }"
+                        ></v-switch>
+                        <has-error class="red--text" :form="editedItem" field="active"></has-error>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
@@ -71,28 +79,6 @@
                           field="password_confirmation"
                         ></has-error>
                       </v-col>
-                      <v-col cols="12">
-                        <v-textarea
-                          v-model="editedItem.description"
-                          auto-grow
-                          required
-                          label="Descripción*"
-                          rows="1"
-                          :class="{ 'is-invalid': editedItem.errors.has('description') }"
-                        ></v-textarea>
-                        <has-error class="red--text" :form="editedItem" field="description"></has-error>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-select
-                          v-model="editedItem.roles"
-                          :items="roles"
-                          item-text="name"
-                          item-value="id"
-                          chips
-                          label="Roles"
-                          multiple
-                        ></v-select>
-                      </v-col>
                     </v-row>
                   </v-container>
                 </form>
@@ -113,43 +99,16 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:item.active="{ item }">
+        <span :class="getColor(item.active)">{{item.active!==false?'Habilitado':'Deshabilitado'}}</span>
+      </template>
       <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
       <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
-      <template v-slot:item.staff="{ item }">
-        <v-chip
-          :color="getColor(item.staff)"
-          dark
-        >{{ item.staff !== null ? "Asignado" : "Sin asignar" }}</v-chip>
-      </template>
-      <template v-slot:item.roles="{ item }">
-        <div class="text-left" v-for="(rol, index) in item.roles" :key="index">{{rol.name }}</div>
-      </template>
-      <template v-slot:item.staffname="{ item }">{{ nameStaff(item) }}</template>
-      <template v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length">
-          Roles:
-          <v-list-item>
-            <v-list-item-content>
-              <v-row no-gutters>
-                <v-col
-                  cols="12"
-                  class="text-left"
-                  v-for="(rol, index) in item.roles"
-                  :key="index"
-                >- {{rol.name}}</v-col>
-                <v-col cols="12" class="text-left" v-if="item.roles.length==0">
-                  <strong>No tiene roles asignados</strong>
-                </v-col>
-              </v-row>
-            </v-list-item-content>
-          </v-list-item>
-        </td>
-      </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" fab x-small dark @click="editItem(item)">
+        <v-btn color="primary" fab x-small dark @click="editItem(item)" v-if="can('dealers.edit')">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn color="red" fab x-small dark @click="deleteItem(item)">
+        <v-btn color="red" fab x-small dark @click="deleteItem(item)" v-if="can('dealers.destroy')">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
@@ -170,79 +129,54 @@ export default {
     loading: true,
     headers: [
       { text: "Nombre", value: "name", align: "center" },
-      {
-        text: "Descripcion",
-        value: "description",
-        width: "15rem",
-        align: "center"
-      },
       { text: "Correo", value: "email", align: "center" },
-      { text: "Estado", value: "staff", align: "center" },
-      { text: "Usuario", value: "staffname", align: "center" },
+      { text: "Estado", value: "active", align: "center" },
       { text: "Fecha de creación", value: "created_at", align: "center" },
       { text: "Fecha de modificación", value: "updated_at", align: "center" },
-      { text: "Actions", value: "actions", sortable: false },
-      { text: "Roles", value: "data-table-expand" }
+      { text: "", value: "actions", sortable: false }
     ],
-    credentials: [],
-    roles: [],
-    expanded: [],
-    singleExpand: false,
+    dealers: [],
     editedIndex: -1,
-    adminId: "",
+    itemId: "",
     editedItem: new Form({
       name: "",
       email: "",
       password: "",
-      password_confirmation: "",
-      description: "",
-      roles: []
+      active: true,
+      password_confirmation: ""
     })
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "Nueva credencial" : "Editar credencial";
-    },
+      return this.editedIndex === -1 ? "Nuevo dealers" : "Editar dealers";
+    }
   },
 
   watch: {
     dialogForm(val) {
       val || this.close();
-    },
-    dialogStaff(val) {
-      val || this.closeStaffModal();
     }
   },
-  beforeCreate() {
-    
-  },
+  beforeCreate() {},
 
   created() {
     this.$store.dispatch("can", "dealers.index");
     this.initialize();
-    this.getRoles();
   },
 
   methods: {
     initialize() {
-      axios.get("/api/admins").then(({ data }) => {
-        this.credentials = data;
+      axios.get("/api/dealers").then(({ data }) => {
+        this.dealers = data;
         this.loading = false;
       });
     },
     editItem(item) {
-      (this.editedIndex = { id: item.id }),
-        (this.editedItem.staff_id = item.staff_id),
-        (this.editedItem.name = item.name),
-        (this.editedItem.email = item.email),
-        (this.editedItem.description = item.description),
-        (this.adminId = item.id),
-        (this.dialogForm = true),
-        (this.editedItem.roles = []);
-      for (var i = 0; i < item.roles.length; i++) {
-        this.editedItem.roles.push(item.roles[i].id);
-      }
+      this.editedIndex = { id: item.id };
+      this.editedItem.fill(item);
+      this.itemId = item.id;
+      this.dialogForm = true;
     },
 
     deleteItem(item) {
@@ -256,13 +190,13 @@ export default {
         confirmButtonText: "Si, Eliminar"
       }).then(result => {
         if (result.value) {
-          let url = "/api/admins/destroy/" + item.id;
-          const index = this.credentials.indexOf(item);
+          let url = "/api/dealers/destroy/" + item.id;
+          const index = this.dealers.indexOf(item);
           axios
             .delete(url)
             .then(({ data }) => {
               if (data.status == "200") {
-                this.credentials.splice(index, 1);
+                this.dealers.splice(index, 1);
                 toastr.success("Eliminado con exito");
               }
             })
@@ -272,7 +206,6 @@ export default {
         }
       });
     },
-
     close() {
       this.dialogForm = false;
       this.$nextTick(() => {
@@ -280,15 +213,10 @@ export default {
         this.emptyForm();
       });
     },
-    closeStaffModal() {
-      this.dialogStaff = false;
-      this.adminId = "";
-      this.form.staff_id = "";
-    },
     save() {
       if (this.editedIndex === -1) {
         this.editedItem
-          .post("/api/admins/store")
+          .post("/api/dealers/store")
           .then(({ data }) => {
             if (data.status == "200") {
               this.initialize();
@@ -300,7 +228,7 @@ export default {
             toastr.error("Error al registrar");
           });
       } else {
-        let url = "/api/admins/update/" + this.adminId;
+        let url = `/api/dealers/update/${this.itemId}`;
         this.editedItem
           .put(url)
           .then(({ data }) => {
@@ -319,19 +247,7 @@ export default {
       this.editedItem.reset();
     },
     getColor(status) {
-      return status !== null ? "green" : "red";
-    },
-    getRoles() {
-      axios
-        .get("/api/roles/list/OnlyName")
-        .then(({ data }) => (this.roles = data));
-    },
-    nameStaff(item) {
-      let name = "";
-      if (item.staff !== null) {
-        name = item.staff.staffname + " " + item.staff.stafflastname;
-      }
-      return name;
+      return status !== false ? "" : "red--text";
     },
     formatedTime(t) {
       return moment(t).format("Do MMM YY");

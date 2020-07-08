@@ -18,6 +18,8 @@ class CreateOffersTable extends Migration
             $table->string('name');
             $table->integer('discount');
             $table->boolean('active')->default(0);
+            $table->integer('offerable_id')->unsigned();
+            $table->string('oferable_type');
             $table->timestamps();
         });
     }
