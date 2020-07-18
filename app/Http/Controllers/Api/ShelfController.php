@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShelfStoreRequest;
 use App\Http\Requests\ShelfUpdateRequest;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ShelfController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -17,29 +18,41 @@ class ShelfController extends Controller
     public function index()
     {
         return DB::table('shelves')
-        ->join('subsidiaries','shelves.subsidiary_id','=','subsidiaries.id')
-        ->leftJoin('dealers','shelves.dealer_id','=','dealers.id')
-        ->select('shelves.*','subsidiaries.name as subsidiary','dealers.name as dealer')
-        ->orderBy('created_at')
-        ->get();
+            ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
+            ->leftJoin('dealers', 'shelves.dealer_id', '=', 'dealers.id')
+            ->select('shelves.*', 'subsidiaries.name as subsidiary', 'dealers.name as dealer')
+            ->orderBy('created_at')
+            ->get();
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function listOnlyNamebySubsidiary($id)
     {
-        return DB::table('shelves')
-        ->join('subsidiaries','shelves.subsidiary_id','=','subsidiaries.id')
-        ->select('shelves.id','shelves.name')
-        ->where('subsidiaries.id',$id)
-        ->orderBy('shelves.name')
-        ->get();
+        if (auth('admin')->user()) {
+            return DB::table('shelves')
+                ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
+                ->select('shelves.id', 'shelves.name')
+                ->where('subsidiaries.id', $id)
+                ->where('shelves.rentalstatus', 'DISABLE')
+                ->orderBy('shelves.name')
+                ->get();
+        } else {
+            $user = auth('dealer')->user();
+            return DB::table('shelves')
+                ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
+                ->select('shelves.id', 'shelves.name')
+                ->where('subsidiaries.id', $id)
+                ->where('shelves.dealer_id', $user['id'])
+                ->orderBy('shelves.name')
+                ->get();
+        }
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -47,11 +60,11 @@ class ShelfController extends Controller
     public function listbyDealer($id)
     {
         return DB::table('shelves')
-        ->join('subsidiaries','shelves.subsidiary_id','=','subsidiaries.id')
-        ->select('shelves.id','shelves.name','shelves.updated_at','subsidiaries.name as subsidiary')
-        ->where('shelves.dealer_id',$id)
-        ->orderBy('shelves.name')
-        ->get();
+            ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
+            ->select('shelves.id', 'shelves.name', 'shelves.updated_at', 'subsidiaries.name as subsidiary')
+            ->where('shelves.dealer_id', $id)
+            ->orderBy('shelves.name')
+            ->get();
     }
 
     /**

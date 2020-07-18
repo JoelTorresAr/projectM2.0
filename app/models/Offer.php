@@ -13,7 +13,8 @@ class Offer extends Model
    */
   protected $fillable = [
     'name',
-    'discount'
+    'discount',
+    'active'
   ];  
   
    /**
@@ -31,5 +32,14 @@ class Offer extends Model
     public function articles()
     {
         return $this->belongsToMany('App\models\Article');
+    }
+
+    
+    /**
+     * Get the owning offerable model.
+     */
+    public function offerable()
+    {
+        return $this->morphTo();
     }
 }

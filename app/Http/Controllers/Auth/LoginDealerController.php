@@ -88,6 +88,7 @@ class LoginDealerController extends Controller
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => $expires_in,
+            'user'         => auth('dealer')->user(),
         ])->withCookie('token', $token, $time);
     }
 }

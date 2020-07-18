@@ -324,5 +324,22 @@ class PermissionsTableSeeder extends Seeder
             'name'       => 'workstations.destroy',
             'description'=> 'Elimina las areas de trabajo'
         ]);
+        //Sale
+        Permission::create([
+            'name'       => 'sale.index',
+            'description'=> 'Lista y navega las ventas'
+        ]);
+        Permission::create([
+            'name'       => 'sale.create',
+            'description'=> 'Crea ventas'
+        ]);
+        Permission::create([
+            'name'       => 'sale.edit',
+            'description'=> 'Editar las ventas'
+        ]);
+        Permission::create([
+            'name'       => 'sale.destroy',
+            'description'=> 'Elimina las ventas'
+        ]);
     }
 }

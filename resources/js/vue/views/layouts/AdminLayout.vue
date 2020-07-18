@@ -16,7 +16,7 @@
 
           <v-list-item-content>
             <v-list-item-title>{{user}}</v-list-item-title>
-            <v-list-item-subtitle>Subtext</v-list-item-subtitle>
+            <v-list-item-subtitle>Administrador</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -175,6 +175,12 @@
           </v-list-item>
         </v-list-group>
       </v-list>
+      <v-list-item exact :to="{name: 'sale'}" v-if="can('sale.create')">
+        <v-list-item-icon>
+          <v-icon>fas fa-circle-notch</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Venta</v-list-item-title>
+      </v-list-item>
       <v-spacer></v-spacer>
       <v-list-item @click="changeTheme">
         <v-list-item-action>
@@ -207,9 +213,9 @@
     <v-content>
       <v-container class="fill-height" fluid>
         <v-layout class="justify-center">
-         <!-- <v-flex class="shrink"> -->
-            <router-view />
-         <!-- </v-flex> -->
+          <!-- <v-flex class="shrink"> -->
+          <router-view />
+          <!-- </v-flex> -->
         </v-layout>
       </v-container>
     </v-content>

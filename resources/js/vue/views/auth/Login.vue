@@ -8,7 +8,7 @@
               <v-row>
                 <v-col cols="12" md="8">
                   <v-card-text class="mt-10">
-                    <h1 class="text-center display-2 orange--text text--accent-4">Inicio de Sesión</h1>
+                    <h1 class="text-center display-2 orange--text text--accent-4">Inicio de sesión</h1>
                     <form @submit.prevent="login" class="mt-12">
                       <v-text-field
                         v-model="form.email"

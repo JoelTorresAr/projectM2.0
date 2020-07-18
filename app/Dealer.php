@@ -65,4 +65,12 @@ class Dealer extends Authenticatable implements JWTSubject
     {
         return $this->morphMany('App\models\Article', 'articlable');
     }
+
+    /**
+     * Get all of the dealer's offers.
+     */
+    public function offers()
+    {
+      return $this->morphMany('App\models\Offer', 'offerable');
+    }
 }

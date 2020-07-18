@@ -8,7 +8,7 @@
               <v-row>
                 <v-col cols="12" md="8">
                   <v-card-text class="mt-12">
-                    <h1 class="text-center display-2 orange--text text--accent-4">Inicio de Sesión</h1>
+                    <h1 class="text-center display-2 orange--text text--accent-4">Inicio de sesión</h1>
                     <form @submit.prevent="login" class="mt-12">
                       <v-text-field
                         v-model="form.email"
@@ -82,7 +82,8 @@ export default {
         .then(res => {
           if (res.data.access_token) {
             toastr.success("Acceso correcto");
-            localStorage.setItem('token_expires_in', res.data.expires_in);
+            this.$store.commit("SET_TOKEN_EXPIRE_IN", res.data.expires_in);
+            this.$store.commit("SET_USER", res.data.user.name)
             this.$router.push({ name: "dealer" });
           }
         })

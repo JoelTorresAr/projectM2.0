@@ -18,6 +18,7 @@ class Article extends Model
         'provider_id',
         'offer_id',
         'name',
+        'stock',
         'purchaseprice',
         'saleprice',
         'description',

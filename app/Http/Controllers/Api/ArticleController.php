@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Admin;
+use App\Dealer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
@@ -33,6 +34,16 @@ class ArticleController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search($id)
+    {
+        return Article::findOrFail($id);
+    }
+
+    /**
      * Display a listing of the resource by subsidiary.
      * @param  int  $id
      *
@@ -40,23 +51,47 @@ class ArticleController extends Controller
      */
     public function indexbysubsidiary($id)
     {
-        return DB::table('articles')
-            ->join('categories', 'articles.category_id', '=', 'categories.id')
-            ->join('providers', 'articles.provider_id', '=', 'providers.id')
-            ->leftjoin('offers', 'articles.offer_id', '=', 'offers.id')
-            ->join('shelves', 'articles.shelf_id', '=', 'shelves.id')
-            ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
-            ->select(
-                'articles.*',
-                'categories.name as category',
-                'providers.name as provider',
-                'offers.name as offer',
-                'shelves.name as shelf',
-                'subsidiaries.name as subsidiary',
-                'subsidiaries.id as subsidiary_id',
-            )
-            ->where('subsidiaries.id', $id)
-            ->orderBy('subsidiary')->get();
+        if (auth('admin')->user()) {
+            return DB::table('articles')
+                ->join('categories', 'articles.category_id', '=', 'categories.id')
+                ->join('providers', 'articles.provider_id', '=', 'providers.id')
+                ->leftjoin('offers', 'articles.offer_id', '=', 'offers.id')
+                ->join('shelves', 'articles.shelf_id', '=', 'shelves.id')
+                ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
+                ->select(
+                    'articles.*',
+                    'categories.name as category',
+                    'providers.name as provider',
+                    'offers.name as offer',
+                    'shelves.name as shelf',
+                    'subsidiaries.name as subsidiary',
+                    'subsidiaries.id as subsidiary_id',
+                )
+                ->where('subsidiaries.id', $id)
+                ->where('articles.articlable_type', 'App\Admin')
+                ->orderBy('subsidiary')->get();
+        } else {
+            $user = auth('dealer')->user();
+            return DB::table('articles')
+                ->join('categories', 'articles.category_id', '=', 'categories.id')
+                ->leftjoin('providers', 'articles.provider_id', '=', 'providers.id')
+                ->leftjoin('offers', 'articles.offer_id', '=', 'offers.id')
+                ->join('shelves', 'articles.shelf_id', '=', 'shelves.id')
+                ->join('subsidiaries', 'shelves.subsidiary_id', '=', 'subsidiaries.id')
+                ->select(
+                    'articles.*',
+                    'categories.name as category',
+                    'providers.name as provider',
+                    'offers.name as offer',
+                    'shelves.name as shelf',
+                    'subsidiaries.name as subsidiary',
+                    'subsidiaries.id as subsidiary_id',
+                )
+                ->where('articles.articlable_id', $user['id'])
+                ->where('articles.articlable_type', 'App\Dealer')
+                ->where('subsidiaries.id', $id)
+                ->orderBy('subsidiary')->get();
+        }
     }
 
     /**
@@ -72,19 +107,37 @@ class ArticleController extends Controller
         $photoUrl = $photo->store('public/img');
         $mirrorUrl = Storage::url($photoUrl);
         //Article Processed
-        $user = auth('admin')->user();
-        $userValided = Admin::find($user['id']);
-        $userValided->articles()->create([
-            'category_id'    => $request['category_id'],
-            'shelf_id'       => $request['shelf_id'],
-            'provider_id'    => $request['provider_id'],
-            'offer_id'       => $request['offer_id'],
-            'name'           => $request['name'],
-            'purchaseprice'  => (float) $request['purchaseprice'],
-            'saleprice'      => (float) $request['saleprice'],
-            'description'    => $request['description'],
-            'file'           => $mirrorUrl,
-        ]);
+        if ($user = auth('admin')->user()) {
+            $userValided = Admin::find($user['id']);
+            $userValided->articles()->create([
+                'category_id'    => $request['category_id'],
+                'shelf_id'       => $request['shelf_id'],
+                'provider_id'    => $request['provider_id'],
+                'offer_id'       => $request['offer_id'],
+                'name'           => $request['name'], 
+                'stock'          => $request['stock'], 
+                'purchaseprice'  => (float) $request['purchaseprice'],
+                'saleprice'      => (float) $request['saleprice'],
+                'description'    => $request['description'],
+                'file'           => $mirrorUrl,
+            ]);
+        }else{
+            $user = auth('dealer')->user();
+            $userValided = Dealer::find($user['id']);
+            $userValided->articles()->create([
+                'category_id'    => $request['category_id'],
+                'shelf_id'       => $request['shelf_id'],
+                'provider_id'    => $request['provider_id'],
+                'offer_id'       => $request['offer_id'],
+                'name'           => $request['name'],
+                'stock'          => $request['stock'], 
+                'purchaseprice'  => (float) $request['purchaseprice'],
+                'saleprice'      => (float) $request['saleprice'],
+                'description'    => $request['description'],
+                'file'           => $mirrorUrl,
+            ]);
+        }
+
 
         return ['status' => '200', 'message' => 'Creado con exito'];
     }
@@ -111,6 +164,7 @@ class ArticleController extends Controller
                 'provider_id'    => $request['provider_id'],
                 'offer_id'       => $request['offer_id'],
                 'name'           => $request['name'],
+                'stock'          => $request['stock'],
                 'purchaseprice'  => (float) $request['purchaseprice'],
                 'saleprice'      => (float) $request['saleprice'],
                 'description'    => $request['description'],
@@ -123,6 +177,7 @@ class ArticleController extends Controller
                 'provider_id'    => $request['provider_id'],
                 'offer_id'       => $request['offer_id'],
                 'name'           => $request['name'],
+                'stock'          => $request['stock'],
                 'purchaseprice'  => (float) $request['purchaseprice'],
                 'saleprice'      => (float) $request['saleprice'],
                 'description'    => $request['description'],

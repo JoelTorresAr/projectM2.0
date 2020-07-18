@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
+use App\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OfferStoreRequest;
 use App\Http\Requests\OfferUpdateRequest;
@@ -29,10 +31,23 @@ class OfferController extends Controller
      */
     public function store(OfferStoreRequest $request)
     {
-        Offer::create([
-            'name'     => $request['name'],
-            'discount' => $request['discount'],
-        ]);
+        //Offer Processed
+        if ($user = auth('admin')->user()) {
+            $userValided = Admin::find($user['id']);
+            $userValided->offers()->create([
+                'name'     => $request['name'],
+                'discount' => $request['discount'],
+                'active'   => true,
+            ]);
+        } else {
+            $user = auth('dealer')->user();
+            $userValided = Admin::find($user['id']);
+            $userValided->offers()->create([
+                'name'     => $request['name'],
+                'discount' => $request['discount'],
+                'active'   => true,
+            ]);
+        }
 
 
         return ['status' => '200', 'message' => 'Creado con exito'];

@@ -33,7 +33,12 @@
             <v-spacer></v-spacer>
             <v-dialog v-model="dialogForm" persistent max-width="600px">
               <template v-slot:activator="{ on }" v-if="can('articles.create')">
-                <v-btn color="primary" class="mb-2" v-on="on">Agregar nuevo</v-btn>
+                <v-btn
+                  color="primary"
+                  class="mb-2"
+                  v-on="on"
+                  :disabled="buttonDisable"
+                >Agregar nuevo</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -58,7 +63,7 @@
                             :items="providers"
                             item-text="name"
                             item-value="id"
-                            label="Proveedor*"
+                            label="Proveedor"
                             :loading="loadingProvider"
                             no-data-text="No hay provedores registrados"
                             :class="{ 'is-invalid': editedItem.errors.has('provider_id') }"
@@ -129,6 +134,17 @@
                           <has-error class="red--text" :form="editedItem" field="saleprice"></has-error>
                         </v-col>
                         <v-col cols="12">
+                          <v-text-field
+                            v-model="editedItem.stock"
+                            label="Stock*"
+                            placeholder="_ _ _ _ _ _"
+                            v-mask="['######', '######']"
+                            required
+                            :class="{ 'is-invalid': editedItem.errors.has('stock') }"
+                          ></v-text-field>
+                          <has-error class="red--text" :form="editedItem" field="stock"></has-error>
+                        </v-col>
+                        <v-col cols="12">
                           <v-textarea
                             v-model="editedItem.description"
                             auto-grow
@@ -183,10 +199,24 @@
         <template v-slot:item.created_at="{ item }">{{ formatedTime(item.created_at) }}</template>
         <template v-slot:item.updated_at="{ item }">{{ formatedTime(item.updated_at) }}</template>
         <template v-slot:item.actions="{ item }">
-          <v-btn color="primary" fab x-small dark @click="editItem(item)"  v-if="can('articles.edit')">
+          <v-btn
+            color="primary"
+            fab
+            x-small
+            dark
+            @click="editItem(item)"
+            v-if="can('articles.edit')"
+          >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <v-btn color="red" fab x-small dark @click="deleteItem(item)"  v-if="can('articles.destroy')">
+          <v-btn
+            color="red"
+            fab
+            x-small
+            dark
+            @click="deleteItem(item)"
+            v-if="can('articles.destroy')"
+          >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
@@ -205,6 +235,7 @@ export default {
     loading: false,
     loadingSubsidiary: true,
     loadingShelf: true,
+    buttonDisable: true,
     loadingProvider: true,
     loadingOffer: true,
     loadingCategory: true,
@@ -244,11 +275,12 @@ export default {
       provider_id: "",
       offer_id: "",
       name: "",
+      stock:"",
       purchaseprice: "",
       saleprice: "",
       description: "",
       file: ""
-    }),
+    })
   }),
 
   computed: {
@@ -265,18 +297,17 @@ export default {
       this.articles = [];
       this.shelves = [];
       this.loading = true;
-      this.getArticles(val);
+      (this.buttonDisable = false), this.getArticles(val);
       this.getShelves(val);
     }
   },
 
   created() {
-    this.$store.dispatch("can",'articles.index')
-    this.initialize()
-    this.getCategories()
-    this.getProvider()
-    this.getOffers()
-    
+    this.$store.dispatch("can", "articles.index");
+    this.initialize();
+    this.getCategories();
+    this.getProvider();
+    this.getOffers();
   },
 
   methods: {
@@ -316,7 +347,7 @@ export default {
             toastr.error("Error al registrar");
           });
       } else {
-        let url = `/api/articles/update/${this.articleId}`
+        let url = `/api/articles/update/${this.articleId}`;
         axios
           .post(url, formData, {
             headers: {
@@ -419,6 +450,7 @@ export default {
       formData.set("provider_id", this.editedItem.provider_id);
       formData.set("offer_id", this.editedItem.offer_id);
       formData.set("name", this.editedItem.name);
+      formData.set("stock", this.editedItem.stock);
       formData.set("purchaseprice", this.editedItem.purchaseprice);
       formData.set("saleprice", this.editedItem.saleprice);
       formData.set("description", this.editedItem.description);
@@ -449,9 +481,9 @@ export default {
         this.editedItem.file = null;
       }
     },
-    clearOffer(){
-      if(this.editedItem.offer_id ==undefined){
-        this.editedItem.offer_id = ''
+    clearOffer() {
+      if (this.editedItem.offer_id == undefined) {
+        this.editedItem.offer_id = "";
       }
     }
   }

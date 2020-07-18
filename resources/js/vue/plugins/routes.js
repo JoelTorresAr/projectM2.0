@@ -182,6 +182,14 @@ let routes = [{
                     middleware: [Middlewares.authAdmin]
                 },
             },
+            {
+                path: '/admin/dashboard/sale',
+                name: 'sale',
+                component: require('../views/admin/Sale').default,
+                meta: {
+                    middleware: [Middlewares.authAdmin]
+                },
+            },
         ],
     },
     {
@@ -194,11 +202,52 @@ let routes = [{
     },
     {
         path: '/dealer/dashboard',
-        name: 'dealer',
+        name: 'rootdealer',
         component: require('../views/layouts/DealerLayout.vue').default,
         meta: {
             middleware: [Middlewares.authDealer]
-        }
+        },
+        children: [{
+                path: '/dealer/dashboard',
+                name: 'dealer',
+                component: require('../views/dealer/DealerDashboard').default,
+                meta: {
+                    middleware: [Middlewares.authDealer]
+                },
+            },
+            {
+                path: '/dealer/dashboard/articles',
+                name: 'dealerarticles',
+                component: require('../views/dealer/DealerArticles').default,
+                meta: {
+                    middleware: [Middlewares.authDealer]
+                },
+            },
+            {
+                path: '/dealer/dashboard/offers',
+                name: 'dealeroffers',
+                component: require('../views/dealer/DealerOffers').default,
+                meta: {
+                    middleware: [Middlewares.authDealer]
+                },
+            },
+            {
+                path: '/dealer/dashboard/providers',
+                name: 'dealerproviders',
+                component: require('../views/dealer/DealerProviders').default,
+                meta: {
+                    middleware: [Middlewares.authDealer]
+                },
+            },
+            {
+                path: '/dealer/dashboard/categories',
+                name: 'dealercategories',
+                component: require('../views/dealer/DealerCategories').default,
+                meta: {
+                    middleware: [Middlewares.authDealer]
+                },
+            },
+        ],
     },
     {
         path: '/admin/*',

@@ -48,10 +48,18 @@ class Admin extends AdminModel
   }
 
   /**
-   * Get all of the dealer's articles.
+   * Get all of the admin's articles.
    */
   public function articles()
   {
     return $this->morphMany('App\models\Article', 'articlable');
+  }
+
+  /**
+   * Get all of the admin's offers.
+   */
+  public function offers()
+  {
+    return $this->morphMany('App\models\Offer', 'offerable');
   }
 }

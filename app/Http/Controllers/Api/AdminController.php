@@ -85,6 +85,7 @@ class AdminController extends Controller
                 'email'       => $request['email'],
                 'password'    => Hash::make($request['password']),
                 'description' => $request['description'],
+                'active'      => $request['active'],
                 'api_token'   => Str::random(60),
             ])->save();
         } else {
@@ -92,6 +93,7 @@ class AdminController extends Controller
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'description' => $request['description'],
+                'active'      => $request['active'],
                 'api_token'   => Str::random(60),
             ])->save();
         }

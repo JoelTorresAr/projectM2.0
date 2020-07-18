@@ -159,12 +159,7 @@ export default {
       this.getConcessions(val);
     },
     subsidiary_id(val) {
-      this.loadingShelves = true;
-      this.shelves = [];
-      axios.get(`/api/concessions/list/shelves/${val}`).then(({ data }) => {
-        this.shelves = data;
-        this.loadingShelves = false;
-      });
+      this.getShelves(val);
     }
   },
   beforeCreate() {},
@@ -233,6 +228,7 @@ export default {
           .then(({ data }) => {
             if (data.status == "200") {
               this.getConcessions(this.dealer_selected);
+              this.getShelves(this.subsidiary_id)
               toastr.success("Registrado con exito");
               this.close();
             }
@@ -254,6 +250,14 @@ export default {
         this.concessions = [];
         this.concessions = data;
         this.loading = false;
+      });
+    },
+    getShelves(subsidiary){
+      this.loadingShelves = true;
+      this.shelves = [];
+      axios.get(`/api/concessions/list/shelves/${subsidiary}`).then(({ data }) => {
+        this.shelves = data;
+        this.loadingShelves = false;
       });
     }
   }
