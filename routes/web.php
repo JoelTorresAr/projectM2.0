@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-
+Route::get('/{any}', 'HomeController@spa')->name('home')->where('any','.*');
 Route::get('admin/{any}', 'HomeController@spa')->where('any','.*');
 Route::get('dealer/{any}', 'HomeController@spa')->where('any','.*');

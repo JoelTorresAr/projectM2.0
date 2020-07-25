@@ -36,6 +36,30 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function dashboard()
+    {
+        $tablas = [
+            ['id'=>'staff','name'=>'Trabajadores'],
+            ['id'=>'dealers','name'=>'Dealers'],
+            ['id'=>'articles','name'=>'Articulos'],
+            ['id'=>'sales','name'=>'Ventas Realizadas'],
+            ['id'=>'categories','name'=>'Categorias'],
+        ];
+        $result = [];
+        foreach ($tablas as $item) {
+            $quantity = DB::table($item['id'])->count();
+            $newValue = ['name'=>$item['name'],'quantity'=>$quantity];
+
+            array_push($result, $newValue);
+        }
+        return $result;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function listOnlyName()
     {
         return  DB::table('admins')

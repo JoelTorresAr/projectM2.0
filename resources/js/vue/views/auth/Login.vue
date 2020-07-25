@@ -88,7 +88,7 @@ export default {
         .get("/api/admin/me")
         .then(res => {
           if (res !== undefined) {
-            this.$router.push({ name: "admin" });
+            //window.history.length > 1 ? this.$router.go(-1) : this.$router.push({ name: "admin" })
           }
         })
         .catch(error => {});
@@ -113,7 +113,8 @@ export default {
             this.$store.commit("SET_ROLES", JSON.stringify(roles))
             this.$store.commit("SET_PERMISSIONS", JSON.stringify(permissions))
             this.$store.commit("SET_USER", res.data.user.name)
-            this.$router.push({ name: "admin" })
+            window.history.length > 1 ? this.$router.go(-1) : this.$router.push({ name: "admin" })
+           // this.$router.go({ name: "sales" })
             //location.reload();
           }
         })

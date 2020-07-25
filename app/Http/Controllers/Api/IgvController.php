@@ -21,6 +21,16 @@ class IgvController extends Controller
         ->get();
     }
 
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function current()
+    {
+        return Igv::all()->last();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

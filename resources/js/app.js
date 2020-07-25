@@ -17,6 +17,7 @@ Vue.component('passport-personal-access-tokens', require('./components/passport/
 Vue.component('app-component', require('./Components/AppComponent.vue').default)
 Vue.component('admin-layout', require('./vue/views/layouts/AdminLayout.vue').default)
 Vue.component('login', require('./vue/views/auth/Login.vue').default)
+Vue.component('spinner', require('./components/widgets/Spinner').default);
 
 //suport Rutas
 import router from './vue/plugins/routes'

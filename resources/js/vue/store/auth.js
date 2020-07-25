@@ -8,6 +8,8 @@ export const auth = {
         permissions: null,
         user: null,
         tokenExpireIn: 0,
+        storeCar: null,
+        igv: 0,
     },
     getters: {
         darkStile: (state) => {
@@ -24,6 +26,12 @@ export const auth = {
         },
         getPermissions: (state) => {
             return state.permissions
+        },
+        getStoreCar: (state) => {
+            return state.storeCar
+        },
+        getIgv: (state) => {
+            return state.igv
         },
     },
     actions: {
@@ -109,6 +117,12 @@ export const auth = {
         },
         SET_PERMISSIONS(state, permissions) {
             state.permissions = permissions;
+        },
+        SET_STORE_CAR(state, items) {
+            state.storeCar = items;
+        },
+        SET_IGV(state, igv) {
+            state.igv = igv;
         },
     },
     modules: {}

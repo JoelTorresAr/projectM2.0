@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 import { auth } from './auth';
 const dataState = new createPersistedState({
-    paths: ['auth.permissions', 'auth.roles', 'auth.darkStile', 'auth.tokenExpireIn', 'auth.user'],
+    paths: ['auth.permissions', 'auth.roles', 'auth.darkStile', 'auth.tokenExpireIn', 'auth.user', 'auth.storeCar', 'auth.igv'],
     storage: {
         getItem: (key) => ls.get(key),
         setItem: (key, value) => ls.set(key, value),

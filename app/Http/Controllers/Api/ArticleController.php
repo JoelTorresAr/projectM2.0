@@ -20,7 +20,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $subsidiary = 1;
+       /* $subsidiary = 1;
         return Article::with([
             'provider:providers.id,providers.name',
             'offer:offers.id,offers.name,offers.discount',
@@ -30,7 +30,8 @@ class ArticleController extends Controller
                 $query->select('subsidiaries.id', 'subsidiaries.name as subsidiary');
                 //->where('subsidiaries.id',$subsidiary);
             },
-        ])->get();
+        ])->get();*/
+        return Article::with(['offer:offers.id,offers.name,offers.discount',])->get();
     }
 
     /**
@@ -38,9 +39,28 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search($id)
+    public function searchbyid($id)
     {
-        return Article::findOrFail($id);
+        return Article::with(['offer:offers.id,offers.name,offers.discount',])->findOrFail($id);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function searchbycategoryid($id)
+    {
+        return Article::with(['offer:offers.id,offers.name,offers.discount',])->where('category_id',$id)->get();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function searchbyname($name)
+    {
+        return Article::with(['offer:offers.id,offers.name,offers.discount',])->where('name',$name)->get();
     }
 
     /**
@@ -109,7 +129,7 @@ class ArticleController extends Controller
         //Article Processed
         if ($user = auth('admin')->user()) {
             $userValided = Admin::find($user['id']);
-            $userValided->articles()->create([
+            $userValided->salable()->create([
                 'category_id'    => $request['category_id'],
                 'shelf_id'       => $request['shelf_id'],
                 'provider_id'    => $request['provider_id'],
@@ -124,7 +144,7 @@ class ArticleController extends Controller
         }else{
             $user = auth('dealer')->user();
             $userValided = Dealer::find($user['id']);
-            $userValided->articles()->create([
+            $userValided->salable()->create([
                 'category_id'    => $request['category_id'],
                 'shelf_id'       => $request['shelf_id'],
                 'provider_id'    => $request['provider_id'],

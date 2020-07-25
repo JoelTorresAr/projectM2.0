@@ -19,10 +19,20 @@ DB::listen(function($e){
     dump($e->sql);
 });*/
 
+//Cliente
+Route::group(['prefix' => 'user', 'namespace' => 'Auth'], function () {
+    Route::post('login', 'LoginClientController@login');
+});
+
+Route::group(['prefix' => 'user', 'namespace' => 'Auth'], function () {
+    Route::post('register', 'LoginClientController@register');
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//Administrador
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function () {
     Route::post('login', 'LoginAdminController@login');
 });
@@ -31,6 +41,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function () {
 Route::group(['prefix' => 'subsidiaries', 'namespace' => 'Api'], function () {
     Route::get('/', 'SubsidiaryController@index');
     Route::get('list/onlyname', 'SubsidiaryController@listOnlyName');
+});
+
+//IgvController
+Route::group(['prefix' => 'igvs', 'namespace' => 'Api'], function () {
+    Route::get('current', 'IgvController@current');
 });
 
 //CategoryController
@@ -60,10 +75,21 @@ Route::group(['prefix' => 'providers', 'namespace' => 'Api'], function () {
 //ArticleController
 Route::group(['prefix' => 'articles', 'namespace' => 'Api'], function () {
     Route::get('/', 'ArticleController@index');
+    Route::get('searchbyid/{id}', 'ArticleController@searchbyid');
+    Route::get('searchbycategoryid/{id}', 'ArticleController@searchbycategoryid');
+    Route::get('searchbyname/{name}', 'ArticleController@searchbyname');
     Route::get('listby/{subsidiary}', 'ArticleController@indexbysubsidiary');
     Route::post('store', 'ArticleController@store');
     Route::post('update/{article}', 'ArticleController@update');
     Route::delete('destroy/{article}', 'ArticleController@destroy');
+});
+
+//SaleController
+Route::group(['prefix' => 'sales', 'namespace' => 'Api'], function () {
+    Route::get('/', 'SaleController@index');
+    Route::post('store', 'SaleController@store');
+    Route::post('update/{article}', 'SaleController@update');
+    Route::delete('destroy/{article}', 'SaleController@destroy');
 });
 
 //ShelfController
@@ -127,6 +153,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     //AdminController
     Route::group(['prefix' => 'admins', 'namespace' => 'Api'], function () {
         Route::get('/', 'AdminController@list');
+        Route::get('dashboard/', 'AdminController@dashboard');
         Route::get('list/onlyname', 'AdminController@listOnlyName');
         Route::post('store', 'AdminController@store');
         Route::put('update/{admin}', 'AdminController@update');
@@ -192,7 +219,6 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     //ArticleController
     Route::group(['prefix' => 'articles', 'namespace' => 'Api'], function () {
-        Route::get('search/{id}', 'ArticleController@search');
     });
 
     //PhotosController

@@ -62,4 +62,12 @@ class Admin extends AdminModel
   {
     return $this->morphMany('App\models\Offer', 'offerable');
   }
+
+  /**
+   * Get all of the admin's sales.
+   */
+  public function sales()
+  {
+    return $this->morphMany('App\models\Sale', 'salable');
+  }
 }

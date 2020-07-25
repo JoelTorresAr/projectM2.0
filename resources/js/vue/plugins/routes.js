@@ -4,9 +4,38 @@ import Middlewares from '../middleware/'
 Vue.use(Router)
 
 let routes = [{
+        path: '/login',
+        name: 'authenticateclient',
+        component: require('../views/auth/ClientLogin.vue').default,
+        meta: {
+            middleware: [Middlewares.guestClient]
+        }
+    }, {
+        path: '/',
+        name: 'rootstore',
+        redirect: 'indexstore',
+        component: require('../views/layouts/StoreLayout.vue').default,
+        children: [{
+            path: '/',
+            name: 'indexstore',
+            component: require('../views/store/AppIndex.vue').default
+        }, {
+            path: '/categories/:id',
+            name: 'articlesbycategory',
+            component: require('../views/store/Articles.vue').default
+        }, {
+            path: '/article/:id',
+            name: 'articlebyid',
+            component: require('../views/store/Article.vue').default
+        }, ]
+    }, {
         path: '/admin/401',
         name: 'unauthorized',
         component: require('../views/401.vue').default
+    },
+    {
+        path: '/admin/',
+        redirect: '/admin/login',
     }, {
         path: '/admin/login',
         name: 'authenticate',
@@ -184,7 +213,7 @@ let routes = [{
             },
             {
                 path: '/admin/dashboard/sale',
-                name: 'sale',
+                name: 'sales',
                 component: require('../views/admin/Sale').default,
                 meta: {
                     middleware: [Middlewares.authAdmin]
@@ -250,11 +279,7 @@ let routes = [{
         ],
     },
     {
-        path: '/admin/*',
-        component: require('../views/404.vue').default
-    },
-    {
-        path: '/dealer/*',
+        path: '/*',
         component: require('../views/404.vue').default
     },
 

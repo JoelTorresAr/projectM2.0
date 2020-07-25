@@ -175,7 +175,7 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-      <v-list-item exact :to="{name: 'sale'}" v-if="can('sale.create')">
+      <v-list-item exact :to="{name: 'sales'}" v-if="can('sale.create')">
         <v-list-item-icon>
           <v-icon>fas fa-circle-notch</v-icon>
         </v-list-item-icon>
@@ -210,15 +210,17 @@
       </v-chip>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-container class="fill-height" fluid>
         <v-layout class="justify-center">
           <!-- <v-flex class="shrink"> -->
-          <router-view />
+          <transition mode="out-in">
+            <router-view />
+          </transition>
           <!-- </v-flex> -->
         </v-layout>
       </v-container>
-    </v-content>
+    </v-main>
 
     <v-footer app class="teal--text text--accent-3">
       <v-container fill-height fluid class="justify-center">
@@ -285,6 +287,7 @@ export default {
       localStorage.removeItem("vuex");
       axios.post("/api/admin/logout").then(({ data }) => {
         if (data.message) {
+          localStorage.clear();
           this.$router.push({ name: "authenticate" });
         }
       });
@@ -329,6 +332,7 @@ export default {
           timeLeft -= 1000;
           clearInterval(interval);
           toastr.error("Token vencido");
+          localStorage.clear();
           this.$router.push({ name: "authenticate" });
           //,onComplete()
         }
@@ -389,3 +393,12 @@ export default {
   }
 };
 </script>
+<style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s;
+}
+.v-enter, .v-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

@@ -15,9 +15,10 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained();
+            $table->integer('salable_id')->unsigned();
+            $table->string('salable_type');
+            $table->string('dni')->nullable();
             $table->foreignId('igv_id')->constrained();
-            $table->foreignId('user_id')->constrained();
             $table->foreignId('prooftype_id')->constrained();
             $table->enum('paytype',['CASH','CARD'])->default('CASH');
             $table->decimal('totalpay',18,2);

@@ -3,33 +3,17 @@
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
         <v-col cols="12">
-          <v-card>
-            <v-row>
-              <v-col cols="12" md="8" class="neuro__color">
-                <v-card-text class="mt-10">
-                  <div class="player">
-                    <div class="player__controls">
-                      <div class="player__btn player__btn--small">
-                        <i class="fas fa-arrow-left"></i>
-                      </div>
-                      <h5 class="player__title">Playing now</h5>
-                      <div class="player__btn player__btn--small">
-                        <i class="fas fa-bars"></i>
-                      </div>
-                    </div>
-                    <h2 class="player__artist">Disclosure</h2>
-                    <h3 class="player__song">Latch</h3>
-                  </div>
-                </v-card-text>
-              </v-col>
-              <v-col cols="12" md="4" class="orange accent-4">
-                <v-card-text class="black--text mt-12">
-                  <h1 class="text-center display-1">Bienvenido!</h1>
-                  <h5 class="text-center">Ingresa tus datos para iniciar sesión</h5>
-                </v-card-text>
-              </v-col>
-            </v-row>
-          </v-card>
+          <div class="d-flex align-content-center justify-space-between flex-wrap  neuro__color">
+            <div v-for="(item, index) in items" :key="index">
+              <div class="dashboard__item mr-8 mb-16">
+                <div class="player__controls">
+                  <h5 class="player__title">{{item.name}}</h5>
+                </div>
+                <h2 class="player__artist black--text">{{item.quantity}}</h2>
+                <h3 class="player__song black--text">Registrados</h3>
+              </div>
+            </div>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -42,10 +26,18 @@ export default {
     source: String
   },
   data: () => ({
-    drawer: null
+    drawer: null,
+    items: [],
   }),
   created() {
-    this.$vuetify.theme.dark = true;
+    this.initialize()
+  },
+  methods:{
+    initialize(){
+      axios.get("/api/admins/dashboard").then(({ data }) => {
+        this.items = data
+      });
+    }
   }
 };
 </script>
@@ -55,17 +47,17 @@ export default {
   --gray: #797d7f;
 }
 .neuro__color {
-  background-color: #e0e5ec;
+  background-color: #e0e5ec !important;
 }
 
-.player {
+.dashboard__item {
   /* Basic styling and alignment */
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
 
-  width: 300px;
-  height: 550px;
+  width: 15rem;
+  height: 10rem;
   background-color: var(--background);
   display: flex;
   flex-direction: column;
@@ -91,8 +83,8 @@ export default {
   justify-content: center;
   align-items: center;
   background: linear-gradient(145deg, #cdcdcd, #adadad);
-  box-shadow: -8px -8px 20px #fff9, -5px -5px 10px 0px #ffff,
-              8px 8px 20px #0001, 5px 5px 6px 0px #0001;
+  box-shadow: -8px -8px 20px #fff9, -5px -5px 10px 0px #ffff, 8px 8px 20px #0001,
+    5px 5px 6px 0px #0001;
   color: var(--gray);
 }
 .player__btn:active {
@@ -103,7 +95,7 @@ export default {
   min-width: 50px;
   min-height: 50px;
 }
-.player__title{
+.player__title {
   font-weight: 600;
   font-size: 0.8em;
   color: #a1a1a1;

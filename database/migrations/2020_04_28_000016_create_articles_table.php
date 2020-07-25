@@ -15,12 +15,12 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
+            $table->integer('articlable_id')->unsigned();
+            $table->string('articlable_type');
             $table->foreignId('category_id')->constrained();
             $table->foreignId('shelf_id')->constrained();
             $table->unsignedBigInteger('provider_id')->nullable();
             $table->unsignedBigInteger('offer_id')->nullable();
-            $table->integer('articlable_id')->unsigned();
-            $table->string('articlable_type');
             $table->string('name');
             $table->integer('stock');
             $table->decimal('purchaseprice',18,2);
